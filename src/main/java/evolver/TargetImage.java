@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class TargetImage {
+class TargetImage {
 
     private int imageWidth;
     private int imageHeight;
@@ -13,26 +13,26 @@ public class TargetImage {
     private BufferedImage bufferedImage;
 
 
-    public int getImageWidth() {
+    int getImageWidth() {
         return imageWidth;
     }
 
-    public int getImageHeight() {
+    int getImageHeight() {
         return imageHeight;
     }
 
-    public int getImageType() {
+    int getImageType() {
         return imageType;
     }
 
-    public BufferedImage getBufferedImage() {
+    BufferedImage getBufferedImage() {
         return bufferedImage;
     }
 
-    public TargetImage(File file) throws IOException {
+    TargetImage(File file) throws IOException {
         bufferedImage = ImageIO.read(file);
-        imageHeight=bufferedImage.getHeight();
-        imageWidth=bufferedImage.getWidth();
+        imageHeight = bufferedImage.getHeight();
+        imageWidth = bufferedImage.getWidth();
         imageType = bufferedImage.getType();
     }
 }

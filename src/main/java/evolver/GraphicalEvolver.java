@@ -8,59 +8,46 @@ import java.time.LocalTime;
 public class GraphicalEvolver {
 
 
-
-
     private static TargetImage targetImage;
 
-    public static TargetImage getTargetImage() {
+    static TargetImage getTargetImage() {
         return targetImage;
     }
 
 
+    public static void main(String[] args) {
 
-
-
-
-
-    public static void main(String[] args)   {
-
-        try{
+        try {
             targetImage = new TargetImage(new File(System.getProperty("user.dir") + "/mona_small.png"));
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
 
         }
-        //BufferedImage targetImage = ImageIO.read(new File(System.getProperty("user.dir") + "/red.png"));
-
-
 
 
         Candidate candidate = new Candidate(40);
-        LocalTime start = LocalTime.now();
-        candidate.evolve();
-        candidate.saveToFile("first.png");
-        int antalUpprepningar = 5000;
+        LocalTime startTime = LocalTime.now();
+        //candidate.evolve();
+        //candidate.saveToFile(System.getProperty("user.dir") +"/out/images/"+ "first.png");
+        int antalUpprepningar = 5;
         for (int i = 0; i < antalUpprepningar; i++) {
-            System.out.print(i+" ");
+            System.out.print(i + " ");
             candidate.evolve();
         }
-        candidate.saveToFile("second.png");
-        LocalTime slut = LocalTime.now();
-        Duration duration = Duration.between(start,slut);
-        System.out.println(antalUpprepningar+" upprepningar tog " +duration.getSeconds()+ " sekunder.");
-        System.out.println("det blir "+ (float)antalUpprepningar/duration.getSeconds()+ " per sekund");
+        candidate.saveToFile("result.png");
 
 
 
+        LocalTime endTime = LocalTime.now();
+        Duration duration = Duration.between(startTime, endTime);
+        System.out.println(antalUpprepningar + " upprepningar tog " + duration.getSeconds() + " sekunder.");
+        System.out.println("det blir " + (float) antalUpprepningar / duration.getSeconds() + " per sekund");
 
 
 
-        //TODO: spara till fil
 
 
     }
-
-
 
 
 }

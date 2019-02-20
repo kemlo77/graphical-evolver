@@ -5,21 +5,17 @@ import java.awt.*;
 public interface Trait {
 
 
-    public abstract void mutateShape();
+    void mutateShape();
 
-    public abstract void mutateRGB();
+    void mutateRGB();
 
-    public abstract void mutateAlpha();
+    void mutateAlpha();
 
-    public abstract void mutateAll();
+    void mutateAll();
 
-    public abstract String toCsv();
+    void removeLastMutation();
 
-    public abstract void removeLastMutation();
-
-    public abstract void draw(Graphics2D graphics);
-
-
+    void draw(Graphics2D graphics);
 
 
 }

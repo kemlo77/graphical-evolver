@@ -14,7 +14,11 @@
 * skriva unit-tester
 * hantering för att undvika komplexa polygoner
 * kolla upp att använda java awt polygon
-
+* Klona en candidate
+* ta bort en viss Trait
+* lägg till en Trait
+* Byt ordning på Traits (shuffle)
+* ta bort Traits som inte bidrar (osynliga, dolda eller noll area) 
 
 
 ##simulated annealing
