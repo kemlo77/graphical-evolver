@@ -35,30 +35,26 @@ class Candidate {
             traitsList.add(new Polygon(6, width, height));
         }
 
-        System.out.println("image-type is: " + targetImage.getImageType());
 
         candidateBI = new BufferedImage(width, height, targetImage.getImageType());
         candidateGraphics2D = candidateBI.createGraphics();
-        //candidateGraphics2D = (Graphics2D) candidateGraphics;
 
-        //TODO: duplicerad kod i denna klassen
+        redrawTraits();
+
+
+        calculatedDifference = Differ.imageDifference(targetImage.getBufferedImage(), candidateBI);
+        saveToFile("candidateInitialBI.png");
+        System.out.println("Skillnaden är: " + calculatedDifference);
+
+
+    }
+
+    private void redrawTraits() {
         candidateGraphics2D.setBackground(Color.WHITE);
         candidateGraphics2D.clearRect(0, 0, width, height);
         for (Trait trait : traitsList) {
             trait.draw(candidateGraphics2D);
         }
-
-
-        //TODO: utvärdera tidsskillnad på bildSkillnad1 och bildskillnad2
-        try {
-            calculatedDifference = Differ.imageDifference(targetImage.getBufferedImage(), candidateBI);
-            ImageIO.write(candidateBI, "png", new File(System.getProperty("user.dir") + "/out/images/" + "candidateBI.png"));
-            System.out.println("Skillnaden är: " + calculatedDifference);
-        } catch (IOException e) {
-            System.out.println("kunde inte beräkna initiala skillnaden");
-            e.printStackTrace();
-        }
-
     }
 
 
@@ -80,11 +76,7 @@ class Candidate {
         randomTrait.mutateAll();
 
         //Drawing
-        candidateGraphics2D.setBackground(Color.WHITE);
-        candidateGraphics2D.clearRect(0, 0, width, height);
-        for (Trait trait : traitsList) {
-            trait.draw(candidateGraphics2D);
-        }
+        redrawTraits();
 
         //Comparing
         long differenceAfterMutation = Differ.imageDifference(targetImage.getBufferedImage(), candidateBI);

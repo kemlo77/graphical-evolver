@@ -19,7 +19,7 @@
 * lägg till en Trait
 * Byt ordning på Traits (shuffle)
 * ta bort Traits som inte bidrar (osynliga, dolda eller noll area) 
-
+* skriva en factory för att skapa Candidates
 
 ##simulated annealing
 Tillåta ett visst fel

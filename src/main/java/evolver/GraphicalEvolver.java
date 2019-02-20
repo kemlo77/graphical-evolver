@@ -27,9 +27,8 @@ public class GraphicalEvolver {
 
         Candidate candidate = new Candidate(40);
         LocalTime startTime = LocalTime.now();
-        //candidate.evolve();
-        //candidate.saveToFile(System.getProperty("user.dir") +"/out/images/"+ "first.png");
-        int antalUpprepningar = 5;
+
+        int antalUpprepningar = 200;
         for (int i = 0; i < antalUpprepningar; i++) {
             System.out.print(i + " ");
             candidate.evolve();

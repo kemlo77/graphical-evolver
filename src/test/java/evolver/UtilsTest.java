@@ -13,7 +13,7 @@ class UtilsTest {
     @DisplayName("Check that numbers are within interval")
     void mutateInWholeIntervalTest1() {
         int minValue = 3;
-        int maxValue = 3;
+        int maxValue = 8;
         int returnedValue = Utils.mutateInWholeInterval(minValue, maxValue);
         assertTrue(minValue <= returnedValue);
         assertTrue(maxValue >= returnedValue);
