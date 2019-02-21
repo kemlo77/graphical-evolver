@@ -9,21 +9,17 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Polygon implements Trait {
+public class Polygon extends Trait {
 
   //TODO: ej komplexa polygoner?
   //TODO: fler konstruktorer ex: utan parametrar
   //enkel: 8 vertices, random color
   // utförlig: Point-list, r,g,b, transparens
 
-  static int mutationMaxSteps = 80;
-
 
   private List<Point> pointList;
-  private Color color;
   private Point oldPoint;
   private int mutadedPointNo;
-  private Color oldColor;
   private int width;
   private int height;
 
@@ -68,60 +64,12 @@ public class Polygon implements Trait {
     pointToBeMutated.setLocation(newX, newY);
   }
 
-  @Override
-  public void mutateRGB() {
-    //TODO: skriv om så att man bara muterar en färg alternativt en metod per färg
-    oldColor = color;
-    int newR = Utils.mutateInWholeInterval(0, 255);
-    int newG = Utils.mutateInWholeInterval(0, 255);
-    int newB = Utils.mutateInWholeInterval(0, 255);
-    color = new Color(newR, newG, newB, color.getAlpha());
-  }
-
 
   @Override
-  public void mutateAlpha() {
-    oldColor = color;
-    int newAlpha = Utils.mutateInWholeInterval(0, 255);
-    color = new Color(color.getRed(), color.getGreen(), color.getBlue(), newAlpha);
-  }
-
-
-  @Override
-  public void mutateAll() {
-
-    Random rand = new Random();
-    mutadedPointNo = rand.nextInt(pointList.size());
-    Point pointToBeMutated = pointList.get(mutadedPointNo);
-
-    //backing upp old point location
-    oldPoint = new Point(pointToBeMutated);
-
-    //moving/mutating
-    int newX = Utils.mutateInWholeInterval(0, width);
-    int newY = Utils.mutateInWholeInterval(0, height);
-    pointToBeMutated.setLocation(newX, newY);
-
-    //backing up old color
-    oldColor = color;
-    //creating new color
-    int newR = Utils.mutateInWholeInterval(0, 255);
-    int newG = Utils.mutateInWholeInterval(0, 255);
-    int newB = Utils.mutateInWholeInterval(0, 255);
-    int newAlpha = Utils.mutateInWholeInterval(0, 255);
-    color = new Color(newR, newG, newB, newAlpha);
-  }
-
-
-  @Override
-  public void removeLastMutation() {
+  public void removeLastShapeMutation() {
     if (oldPoint != null) {
       pointList.set(mutadedPointNo, oldPoint);
       oldPoint = null;
-    }
-    if (oldColor != null) {
-      color = oldColor;
-      oldColor = null;
     }
   }
 

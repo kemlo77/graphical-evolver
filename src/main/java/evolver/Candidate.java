@@ -71,7 +71,8 @@ class Candidate {
     //if (selectMutateAction == 2) randomTrait.mutateAlpha();
 
     //Mutating
-    randomTrait.mutateAll();
+    randomTrait.mutateShape();
+    randomTrait.mutateColor();
 
     //Drawing
     redrawTraits();
@@ -84,7 +85,8 @@ class Candidate {
         .print("efter: " + differenceAfterMutation + " before: " + calculatedDifference + " ");
     if (differenceAfterMutation > calculatedDifference) {
       System.out.print("(throw)");
-      randomTrait.removeLastMutation();
+      randomTrait.removeLastShapeMutation();
+      randomTrait.removeLastColorMutation();
     } else {
       System.out.print("(keep)");
       calculatedDifference = differenceAfterMutation;

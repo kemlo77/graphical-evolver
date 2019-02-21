@@ -1,21 +1,37 @@
 package evolver;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
 
-public interface Trait {
+abstract class Trait {
+
+  Color color;
+  private Color oldColor;
+
+  abstract void mutateShape();
+
+  abstract void removeLastShapeMutation();
+
+  void mutateColor() {
+    //backing up old color
+    oldColor = color;
+    //creating new color
+    int newR = Utils.mutateInWholeInterval(0, 255);
+    int newG = Utils.mutateInWholeInterval(0, 255);
+    int newB = Utils.mutateInWholeInterval(0, 255);
+    int newAlpha = Utils.mutateInWholeInterval(0, 255);
+    color = new Color(newR, newG, newB, newAlpha);
+  }
 
 
-    void mutateShape();
+  void removeLastColorMutation() {
+    if (oldColor != null) {
+      color = oldColor;
+      oldColor = null;
+    }
+  }
 
-    void mutateRGB();
 
-    void mutateAlpha();
-
-    void mutateAll();
-
-    void removeLastMutation();
-
-    void draw(Graphics2D graphics);
-
+  abstract void draw(Graphics2D graphics);
 
 }
