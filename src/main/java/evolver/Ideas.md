@@ -21,6 +21,9 @@
 * ta bort Traits som inte bidrar (osynliga, dolda eller noll area) 
 * skriva en factory för att skapa Candidates
 * sätta clip på det område som ritas?
+* hantera andra bildformat än png
+* undersöka vilken image-type som är lämpligast i BufferedImage
+* se om det går att rita effektivare
 
 ##simulated annealing
 Tillåta ett visst fel

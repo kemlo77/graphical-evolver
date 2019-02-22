@@ -23,7 +23,8 @@ public class GraphicalEvolver {
   public static void main(String[] args) {
 
     try {
-      targetImage = new TargetImage(new File(System.getProperty("user.dir") + "/mona_small.png"));
+      targetImage = new TargetImage(
+          new File(System.getProperty("user.dir") + "/160px-Mona_Lisa.PNG"));
     } catch (IOException e) {
       System.out.println("Could not load file specified by user.");
       e.printStackTrace();
@@ -38,6 +39,8 @@ public class GraphicalEvolver {
       System.out.print(i + " ");
       candidate.evolve();
     }
+
+    candidate.redrawTraits();
     candidate.saveToFile("result.png");
 
     LocalTime endTime = LocalTime.now();

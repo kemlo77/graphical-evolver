@@ -18,17 +18,13 @@ public class Polygon extends Trait {
 
 
   private List<Point> pointList;
-  private Point oldPoint;
-  private int mutadedPointNo;
-  private int width;
-  private int height;
 
 
   Polygon(int numberOfVertices, int width, int height) {
 
     //TODO: hantera width och height bättre så att det inte måste finnas med i varje objekt
-    this.width = width;
-    this.height = height;
+    setWidth(width);
+    setHeight(height);
 
     ArrayList<Point> points = new ArrayList<>();
 
@@ -49,28 +45,15 @@ public class Polygon extends Trait {
 
   @Override
   public void mutateShape() {
-    //TODO: jag kommer mutera fler punkter i andra klasser,
-    // kanske borde ligga i Utils-klassen (samma med färg etc)
     Random rand = new Random();
-    mutadedPointNo = rand.nextInt(pointList.size());
-    Point pointToBeMutated = pointList.get(mutadedPointNo);
-
-    //backing upp old point location
-    oldPoint = new Point(pointToBeMutated);
-
-    //moving/mutating
-    int newX = Utils.mutateInWholeInterval(0, width);
-    int newY = Utils.mutateInWholeInterval(0, height);
-    pointToBeMutated.setLocation(newX, newY);
+    int mutadedPointNo = rand.nextInt(pointList.size());
+    mutatePoint(pointList.get(mutadedPointNo));
   }
 
 
   @Override
   public void removeLastShapeMutation() {
-    if (oldPoint != null) {
-      pointList.set(mutadedPointNo, oldPoint);
-      oldPoint = null;
-    }
+    removeLastPointMutation();
   }
 
   @Override

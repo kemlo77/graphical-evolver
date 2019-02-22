@@ -48,7 +48,7 @@ class Candidate {
 
   }
 
-  private void redrawTraits() {
+  void redrawTraits() {
     candidateGraphics2D.setBackground(Color.WHITE);
     candidateGraphics2D.clearRect(0, 0, width, height);
     for (Trait trait : traitsList) {
@@ -63,12 +63,6 @@ class Candidate {
 
     System.out.print(" #" + randomTraitNr + " ");
     Trait randomTrait = traitsList.get(randomTraitNr);
-
-    //TODO:snyggare slumpfunktion här
-    //int selectMutateAction = rand.nextInt(3);
-    //if (selectMutateAction == 0) randomTrait.mutateShape();
-    //if (selectMutateAction == 1) randomTrait.mutateRGB();
-    //if (selectMutateAction == 2) randomTrait.mutateAlpha();
 
     //Mutating
     randomTrait.mutateShape();
@@ -102,7 +96,7 @@ class Candidate {
   }
 
   void saveToFile(String fileName) {
-    String pathToNewFile = System.getProperty("user.dir") + "/out/images/" + fileName;
+    String pathToNewFile = System.getProperty("user.dir") + "/" + fileName;
     System.out.println("Saving candidate to: " + pathToNewFile);
     try {
       ImageIO.write(candidateBI, "png", new File(pathToNewFile));
