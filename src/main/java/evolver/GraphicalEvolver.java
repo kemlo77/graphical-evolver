@@ -24,7 +24,10 @@ public class GraphicalEvolver {
 
     try {
       targetImage = new TargetImage(
-          new File(System.getProperty("user.dir") + "/160px-Mona_Lisa.PNG"));
+          //new File(System.getProperty("user.dir") + "/160px-Mona_Lisa.PNG")
+          new File(System.getProperty("user.dir") + "/mona_small.png")
+      );
+
     } catch (IOException e) {
       System.out.println("Could not load file specified by user.");
       e.printStackTrace();
@@ -32,7 +35,7 @@ public class GraphicalEvolver {
     }
 
     Candidate candidate = new Candidate(40);
-    LocalTime startTime = LocalTime.now();
+    final LocalTime startTime = LocalTime.now();
 
     int antalUpprepningar = 200;
     for (int i = 0; i < antalUpprepningar; i++) {

@@ -24,6 +24,11 @@
 * hantera andra bildformat än png
 * undersöka vilken image-type som är lämpligast i BufferedImage
 * se om det går att rita effektivare
+* Göra möjligt att importera olika bildformat, inte bara png
+* göra möjligt att lätt öppna från Mac/Linux/Windows
+* installera CheckStyle plugin på linux-kärran
+* skriva unit-tester för alla Traits (kolla muteringen på alla delar, och återställningen)
+* skriva toString() för alla Traits
 
 ##simulated annealing
 Tillåta ett visst fel

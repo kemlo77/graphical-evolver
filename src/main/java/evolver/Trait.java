@@ -3,17 +3,29 @@ package evolver;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.util.concurrent.ThreadLocalRandom;
 
 abstract class Trait {
 
   //TODO: borde inte color vara private?
-  Color color;
+  private Color color;
   private Color oldColor;
   private Point pointThatWasMutated;
   private int deltaX = 0;
   private int deltaY = 0;
   private int width;
   private int height;
+
+  Trait(int width, int height) {
+    this.width = width;
+    this.height = height;
+
+    int r = ThreadLocalRandom.current().nextInt(0, 255);
+    int g = ThreadLocalRandom.current().nextInt(0, 255);
+    int b = ThreadLocalRandom.current().nextInt(0, 255);
+
+    this.color = new Color(r, g, b, 10);
+  }
 
   abstract void mutateShape();
 
@@ -27,6 +39,17 @@ abstract class Trait {
     this.height = height;
   }
 
+  int getWidth() {
+    return width;
+  }
+
+  int getHeight() {
+    return height;
+  }
+
+  Color getColor() {
+    return this.color;
+  }
 
   void mutateColor() {
     //backing up old color
@@ -45,6 +68,12 @@ abstract class Trait {
       color = oldColor;
       oldColor = null;
     }
+  }
+
+  Point generateRandomPoint() {
+    int x = ThreadLocalRandom.current().nextInt(0, width + 1);
+    int y = ThreadLocalRandom.current().nextInt(0, height + 1);
+    return new Point(x, y);
   }
 
   void mutatePoint(Point pointToBeMutated) {

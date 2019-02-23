@@ -32,8 +32,18 @@ class Candidate {
     height = targetImage.getImageHeight();
     maximumDifference = width * height * 3 * 255;
 
+    traitsList.add(new Background(width, height));
+
     for (int i = 0; i < numberOfTraits; i++) {
       traitsList.add(new Polygon(6, width, height));
+    }
+
+    for (int j = 0; j < 10; j++) {
+      traitsList.add(new Circle(width, height));
+    }
+
+    for (int k = 0; k < 20; k++) {
+      traitsList.add(new Line(width, height));
     }
 
     candidateBI = new BufferedImage(width, height, targetImage.getImageType());

@@ -1,13 +1,11 @@
 package evolver;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Polygon extends Trait {
 
@@ -21,25 +19,12 @@ public class Polygon extends Trait {
 
 
   Polygon(int numberOfVertices, int width, int height) {
+    super(width,height);
 
-    //TODO: hantera width och height bättre så att det inte måste finnas med i varje objekt
-    setWidth(width);
-    setHeight(height);
-
-    ArrayList<Point> points = new ArrayList<>();
-
+    pointList = new ArrayList<>();
     for (int i = 0; i < numberOfVertices; i++) {
-      int x = ThreadLocalRandom.current().nextInt(0, width + 1);
-      int y = ThreadLocalRandom.current().nextInt(0, height + 1);
-      points.add(new Point(x, y));
+      pointList.add(generateRandomPoint());
     }
-    this.pointList = points;
-
-    int r = ThreadLocalRandom.current().nextInt(0, 255);
-    int g = ThreadLocalRandom.current().nextInt(0, 255);
-    int b = ThreadLocalRandom.current().nextInt(0, 255);
-
-    this.color = new Color(r, g, b, 10);
   }
 
 
@@ -65,19 +50,20 @@ public class Polygon extends Trait {
       polygon.lineTo(pointList.get(i).x, pointList.get(i).y);
     }
     polygon.closePath();
-    g2d.setPaint(color);
+    g2d.setPaint(getColor());
     g2d.fill(polygon);
   }
 
   @Override
   public String toString() {
 
+    //TODO: skriva snyggare. String eller StringBuilder för Color bör ligga i Trait.java
     StringBuilder sb = new StringBuilder();
     sb.append("[")
-        .append(color.getRed()).append(",")
-        .append(color.getGreen()).append(",")
-        .append(color.getBlue()).append(",")
-        .append(color.getAlpha()).append("] ");
+        .append(getColor().getRed()).append(",")
+        .append(getColor().getGreen()).append(",")
+        .append(getColor().getBlue()).append(",")
+        .append(getColor().getAlpha()).append("] ");
     for (Point p : pointList) {
       sb.append(p.x).append(",")
           .append(p.y).append(" ");
