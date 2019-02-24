@@ -35,7 +35,25 @@ class Circle extends Trait {
 
   @Override
   void draw(Graphics2D g2d) {
+    //TODO: kolla matten i denna. Kommer i 50% av fallen hamna en halv pixel fel?
+    int x = midPoint.x - (diameter / 2);
+    int y = midPoint.y - (diameter / 2);
     g2d.setColor(getColor());
-    g2d.fillOval(midPoint.x, midPoint.y, diameter, diameter);
+    g2d.fillOval(x, y, diameter, diameter);
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb
+        .append("<circle ")
+        .append("cx=\"").append(midPoint.x).append("\" ")
+        .append("cy=\"").append(midPoint.y).append("\" ")
+        .append("r=\"").append(diameter / 2f).append("\" ")
+        .append("fill=")
+        //color info
+        .append(super.toString())
+        .append("/>");
+    return sb.toString();
   }
 }

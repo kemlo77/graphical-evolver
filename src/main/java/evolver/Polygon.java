@@ -19,7 +19,7 @@ public class Polygon extends Trait {
 
 
   Polygon(int numberOfVertices, int width, int height) {
-    super(width,height);
+    super(width, height);
 
     pointList = new ArrayList<>();
     for (int i = 0; i < numberOfVertices; i++) {
@@ -56,18 +56,17 @@ public class Polygon extends Trait {
 
   @Override
   public String toString() {
-
-    //TODO: skriva snyggare. String eller StringBuilder för Color bör ligga i Trait.java
     StringBuilder sb = new StringBuilder();
-    sb.append("[")
-        .append(getColor().getRed()).append(",")
-        .append(getColor().getGreen()).append(",")
-        .append(getColor().getBlue()).append(",")
-        .append(getColor().getAlpha()).append("] ");
+    sb.append("<polygon points=\"");
     for (Point p : pointList) {
       sb.append(p.x).append(",")
           .append(p.y).append(" ");
     }
+    sb.append("\" ")
+        .append("fill=");
+    //color info
+    sb.append(super.toString());
+    sb.append("/>");
     return sb.toString();
   }
 

@@ -94,4 +94,17 @@ abstract class Trait {
 
   abstract void draw(Graphics2D graphics);
 
+  @Override
+  public String toString() {
+    //TODO: färre antal decimaler på alpha
+    StringBuilder sb = new StringBuilder();
+    sb.append("rgb(")
+        .append(color.getRed()).append(",")
+        .append(color.getGreen()).append(",")
+        .append(color.getBlue()).append(") ")
+        .append("opacity=\"")
+        .append(color.getAlpha() / 255f).append("\" ");
+    return sb.toString();
+  }
+
 }

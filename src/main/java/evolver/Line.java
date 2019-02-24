@@ -49,4 +49,24 @@ public class Line extends Trait {
     g2d.setColor(getColor());
     g2d.drawLine(p1.x, p1.y, p2.x, p2.y);
   }
+
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb
+        .append("<line ")
+        .append("x1=\"").append(p1.x).append("\" ")
+        .append("y1=\"").append(p1.y).append("\" ")
+        .append("x2=\"").append(p2.x).append("\" ")
+        .append("y2=\"").append(p2.y).append("\" ")
+        .append(" ")
+        .append("stroke=")
+        //color info
+        .append(super.toString())
+        .append(" ")
+        .append("stroke-width=\"").append(lineWidth).append("\" ")
+        .append("/>");
+    return sb.toString();
+  }
 }

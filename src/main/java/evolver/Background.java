@@ -26,4 +26,18 @@ class Background extends Trait {
     g2d.setPaint(getColor());
     g2d.fillRect(0, 0, getWidth(), getHeight());
   }
+
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("<rect ")
+        .append("width=\"").append(getWidth()).append("\" ")
+        .append("height=\"").append(getHeight()).append("\" ")
+        .append("fill=")
+        //color info
+        .append(super.toString())
+        .append("/>");
+    return sb.toString();
+  }
 }

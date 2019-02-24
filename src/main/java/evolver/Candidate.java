@@ -38,11 +38,11 @@ class Candidate {
       traitsList.add(new Polygon(6, width, height));
     }
 
-    for (int j = 0; j < 10; j++) {
+    for (int j = 0; j < 5; j++) {
       traitsList.add(new Circle(width, height));
     }
 
-    for (int k = 0; k < 20; k++) {
+    for (int k = 0; k < 5; k++) {
       traitsList.add(new Line(width, height));
     }
 
@@ -114,6 +114,20 @@ class Candidate {
       System.out.println("Could not save candidate image file to: " + pathToNewFile);
       e.printStackTrace();
     }
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb
+        .append("<svg ")
+        .append("width=\"").append(width).append("\" ")
+        .append("height=\"").append(height).append("\">\n");
+    for (Trait trait : traitsList) {
+      sb.append("  ").append(trait).append("\n");
+    }
+    sb.append("</svg>");
+    return sb.toString();
   }
 
 

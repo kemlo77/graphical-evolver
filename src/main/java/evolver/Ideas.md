@@ -29,6 +29,10 @@
 * installera CheckStyle plugin på linux-kärran
 * skriva unit-tester för alla Traits (kolla muteringen på alla delar, och återställningen)
 * skriva toString() för alla Traits
+* kolla rendering hints (tex för antialiasing)
+  https://docs.oracle.com/javase/7/docs/api/java/awt/RenderingHints.html
+* bakgrunden borde vara ogenomskinlig
+* det finns ju andra metoder för att rita polygoner, som kanske är effektivare?
 
 ##simulated annealing
 Tillåta ett visst fel
