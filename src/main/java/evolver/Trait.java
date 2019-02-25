@@ -3,6 +3,7 @@ package evolver;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 
 abstract class Trait {
@@ -94,17 +95,16 @@ abstract class Trait {
 
   abstract void draw(Graphics2D graphics);
 
-  @Override
-  public String toString() {
-    //TODO: färre antal decimaler på alpha
-    StringBuilder sb = new StringBuilder();
-    sb.append("rgb(")
-        .append(color.getRed()).append(",")
-        .append(color.getGreen()).append(",")
-        .append(color.getBlue()).append(") ")
-        .append("opacity=\"")
-        .append(color.getAlpha() / 255f).append("\" ");
-    return sb.toString();
+  abstract String toSvg();
+
+  String svgColorInfo() {
+    return
+        "rgb("
+            + color.getRed() + ","
+            + color.getGreen() + ","
+            + color.getBlue() + ") "
+            + "opacity=\""
+            + String.format(Locale.ROOT,"%.3f",color.getAlpha() / 255f) + "\" ";
   }
 
 }

@@ -52,21 +52,14 @@ public class Line extends Trait {
 
 
   @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb
-        .append("<line ")
-        .append("x1=\"").append(p1.x).append("\" ")
-        .append("y1=\"").append(p1.y).append("\" ")
-        .append("x2=\"").append(p2.x).append("\" ")
-        .append("y2=\"").append(p2.y).append("\" ")
-        .append(" ")
-        .append("stroke=")
-        //color info
-        .append(super.toString())
-        .append(" ")
-        .append("stroke-width=\"").append(lineWidth).append("\" ")
-        .append("/>");
-    return sb.toString();
+  public String toSvg() {
+    return "<line "
+        + "x1=\"" + p1.x + "\" "
+        + "y1=\"" + p1.y + "\" "
+        + "x2=\"" + p2.x + "\" "
+        + "y2=\"" + p2.y + "\" "
+        + "stroke-width=\"" + lineWidth + "\" "
+        + "stroke=" + super.svgColorInfo() + " "
+        + "/>";
   }
 }

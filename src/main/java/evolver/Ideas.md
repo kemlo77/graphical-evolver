@@ -33,6 +33,10 @@
   https://docs.oracle.com/javase/7/docs/api/java/awt/RenderingHints.html
 * bakgrunden borde vara ogenomskinlig
 * det finns ju andra metoder för att rita polygoner, som kanske är effektivare?
+* spara till svg, importera från svg
+* rotera en ellips?
+* uml-diagram, klass-diagram
+* beräkna area av cirkel, polygon (ej komplex). För att kunna ta bort dom som har ~0 i area
 
 ##simulated annealing
 Tillåta ett visst fel

@@ -34,6 +34,7 @@ class Candidate {
 
     traitsList.add(new Background(width, height));
 
+    //TODO: slumpa vilka sorter som kommer med och hur många
     for (int i = 0; i < numberOfTraits; i++) {
       traitsList.add(new Polygon(6, width, height));
     }
@@ -116,15 +117,15 @@ class Candidate {
     }
   }
 
-  @Override
-  public String toString() {
+
+  String toSvg() {
     StringBuilder sb = new StringBuilder();
     sb
         .append("<svg ")
         .append("width=\"").append(width).append("\" ")
         .append("height=\"").append(height).append("\">\n");
     for (Trait trait : traitsList) {
-      sb.append("  ").append(trait).append("\n");
+      sb.append("  ").append(trait.toSvg()).append("\n");
     }
     sb.append("</svg>");
     return sb.toString();

@@ -55,7 +55,7 @@ public class Polygon extends Trait {
   }
 
   @Override
-  public String toString() {
+  public String toSvg() {
     StringBuilder sb = new StringBuilder();
     sb.append("<polygon points=\"");
     for (Point p : pointList) {
@@ -65,7 +65,7 @@ public class Polygon extends Trait {
     sb.append("\" ")
         .append("fill=");
     //color info
-    sb.append(super.toString());
+    sb.append(super.svgColorInfo());
     sb.append("/>");
     return sb.toString();
   }

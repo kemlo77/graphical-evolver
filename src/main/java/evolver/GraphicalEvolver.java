@@ -37,7 +37,7 @@ public class GraphicalEvolver {
     Candidate candidate = new Candidate(10);
     final LocalTime startTime = LocalTime.now();
 
-    int antalUpprepningar = 1000;
+    int antalUpprepningar = 500;
     for (int i = 0; i < antalUpprepningar; i++) {
       System.out.print(i + " ");
       candidate.evolve();
@@ -53,7 +53,7 @@ public class GraphicalEvolver {
     System.out
         .println("det blir " + (float) antalUpprepningar / duration.getSeconds() + " per sekund");
 
-    System.out.println(candidate);
+    System.out.println(candidate.toSvg());
 
 
   }
