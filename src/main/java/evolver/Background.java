@@ -12,7 +12,7 @@ class Background extends Trait {
   }
 
   @Override
-  void mutateShape() {
+  void mutateShape(float degree) {
 
   }
 
@@ -31,6 +31,6 @@ class Background extends Trait {
   @Override
   public String toSvg() {
     return "<rect width=\"" + getWidth() + "\" height=\"" + getHeight() + "\""
-            + " fill=" + super.svgColorInfo() + "/>";
+        + " fill=" + super.svgColorInfo() + "/>";
   }
 }

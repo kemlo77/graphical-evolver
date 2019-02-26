@@ -20,12 +20,11 @@ class Circle extends Trait {
   }
 
   @Override
-  void mutateShape() {
-    mutatePoint(midPoint);
+  void mutateShape(float degree) {
+    mutatePoint(midPoint, degree);
 
-    //TODO: raden borde kanske slumpas enligt mutateInInterval där man kan ange spreadRatio
     oldDiameter = diameter;
-    diameter = Utils.mutateInWholeInterval(1, maxDiameter);
+    diameter = Utils.mutateInInterval(1, maxDiameter, diameter, degree);
   }
 
   @Override

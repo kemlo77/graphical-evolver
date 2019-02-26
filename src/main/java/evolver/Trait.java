@@ -28,7 +28,7 @@ abstract class Trait {
     this.color = new Color(r, g, b, 10);
   }
 
-  abstract void mutateShape();
+  abstract void mutateShape(float degree);
 
   abstract void removeLastShapeMutation();
 
@@ -52,14 +52,13 @@ abstract class Trait {
     return this.color;
   }
 
-  void mutateColor() {
-    //backing up old color
+  void mutateColor(float degree) {
     oldColor = color;
-    //creating new color
-    int newR = Utils.mutateInWholeInterval(0, 255);
-    int newG = Utils.mutateInWholeInterval(0, 255);
-    int newB = Utils.mutateInWholeInterval(0, 255);
-    int newAlpha = Utils.mutateInWholeInterval(0, 255);
+
+    int newR = Utils.mutateInInterval(0, 255, color.getRed(), degree);
+    int newG = Utils.mutateInInterval(0, 255, color.getGreen(), degree);
+    int newB = Utils.mutateInInterval(0, 255, color.getBlue(), degree);
+    int newAlpha = Utils.mutateInInterval(0, 255, color.getAlpha(), degree);
     color = new Color(newR, newG, newB, newAlpha);
   }
 
@@ -77,11 +76,11 @@ abstract class Trait {
     return new Point(x, y);
   }
 
-  void mutatePoint(Point pointToBeMutated) {
+  void mutatePoint(Point pointToBeMutated, float degree) {
     int currentX = (int) pointToBeMutated.getX();
     int currentY = (int) pointToBeMutated.getY();
-    deltaX = Utils.mutateInInterval(0, width, currentX, 1f) - currentX;
-    deltaY = Utils.mutateInInterval(0, height, currentY, 1f) - currentY;
+    deltaX = Utils.mutateInInterval(0, width, currentX, degree) - currentX;
+    deltaY = Utils.mutateInInterval(0, height, currentY, degree) - currentY;
     pointToBeMutated.translate(deltaX, deltaY);
     pointThatWasMutated = pointToBeMutated;
   }
@@ -104,7 +103,7 @@ abstract class Trait {
             + color.getGreen() + ","
             + color.getBlue() + ") "
             + "opacity=\""
-            + String.format(Locale.ROOT,"%.3f",color.getAlpha() / 255f) + "\" ";
+            + String.format(Locale.ROOT, "%.3f", color.getAlpha() / 255f) + "\" ";
   }
 
 }

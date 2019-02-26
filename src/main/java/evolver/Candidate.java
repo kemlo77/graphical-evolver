@@ -34,17 +34,18 @@ class Candidate {
 
     traitsList.add(new Background(width, height));
 
-    //TODO: slumpa vilka sorter som kommer med och hur många
+    Random rand = new Random();
     for (int i = 0; i < numberOfTraits; i++) {
-      traitsList.add(new Polygon(6, width, height));
-    }
-
-    for (int j = 0; j < 5; j++) {
-      traitsList.add(new Circle(width, height));
-    }
-
-    for (int k = 0; k < 5; k++) {
-      traitsList.add(new Line(width, height));
+      int randomInt = rand.nextInt(3);
+      if (randomInt == 0) {
+        traitsList.add(new Polygon(6, width, height));
+      }
+      if (randomInt == 1) {
+        traitsList.add(new Circle(width, height));
+      }
+      if (randomInt == 2) {
+        traitsList.add(new Line(width, height));
+      }
     }
 
     candidateBI = new BufferedImage(width, height, targetImage.getImageType());
@@ -68,7 +69,7 @@ class Candidate {
   }
 
 
-  void evolve() {
+  void evolve(float degree) {
     Random rand = new Random();
     int randomTraitNr = rand.nextInt(traitsList.size());
 
@@ -76,8 +77,8 @@ class Candidate {
     Trait randomTrait = traitsList.get(randomTraitNr);
 
     //Mutating
-    randomTrait.mutateShape();
-    randomTrait.mutateColor();
+    randomTrait.mutateShape(degree);
+    randomTrait.mutateColor(degree);
 
     //Drawing
     redrawTraits();

@@ -26,6 +26,7 @@ public class GraphicalEvolver {
       targetImage = new TargetImage(
           //new File(System.getProperty("user.dir") + "/160px-Mona_Lisa.PNG")
           new File(System.getProperty("user.dir") + "/Mona_Lisa.png")
+      //new File("c:\\temp\\evolver\\160px-Mona_Lisa.png")
       );
 
     } catch (IOException e) {
@@ -34,13 +35,13 @@ public class GraphicalEvolver {
 
     }
 
-    Candidate candidate = new Candidate(10);
+    Candidate candidate = new Candidate(30);
     final LocalTime startTime = LocalTime.now();
 
-    int antalUpprepningar = 500;
+    int antalUpprepningar = 2000;
     for (int i = 0; i < antalUpprepningar; i++) {
       System.out.print(i + " ");
-      candidate.evolve();
+      candidate.evolve(1 - ((float) i / antalUpprepningar) * 0.98f);
     }
 
     candidate.redrawTraits();
@@ -49,7 +50,7 @@ public class GraphicalEvolver {
     LocalTime endTime = LocalTime.now();
     Duration duration = Duration.between(startTime, endTime);
     System.out
-        .println(antalUpprepningar + " upprepningar tog " + duration.getSeconds() + " sekunder.");
+        .println(antalUpprepningar + " upprepningar tog " + duration.toString() + " sekunder.");
     System.out
         .println("det blir " + (float) antalUpprepningar / duration.getSeconds() + " per sekund");
 

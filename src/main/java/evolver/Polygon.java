@@ -29,10 +29,10 @@ public class Polygon extends Trait {
 
 
   @Override
-  public void mutateShape() {
+  public void mutateShape(float degree) {
     Random rand = new Random();
     int mutadedPointNo = rand.nextInt(pointList.size());
-    mutatePoint(pointList.get(mutadedPointNo));
+    mutatePoint(pointList.get(mutadedPointNo), degree);
   }
 
 

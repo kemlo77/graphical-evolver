@@ -2,7 +2,7 @@ package evolver;
 
 import java.util.Random;
 
-public class Utils {
+class Utils {
 
   /**
    * Returns a random int within the given interval (minIncl - maxIncl) A spread ratio close to 1.0
@@ -16,7 +16,10 @@ public class Utils {
    * @param spreadRatio The spread ratio (between 0.01 and 1.0).
    * @return a new random number
    */
-  public static int mutateInInterval(int minIncl, int maxIncl, int currentVal, float spreadRatio) {
+  static int mutateInInterval(int minIncl, int maxIncl, int currentVal, float spreadRatio) {
+    //TODO: tester vid brett intervall, smalt intervall,
+    // när current är nära minIncl eller maxIncl eller i mitten av intervallet
+    //TODO:  tester vid ett smalt intervall
     if (spreadRatio < 0.01f || spreadRatio > 1) {
       throw new IllegalArgumentException(
           "maxStepPerc must be larger than 0.01 and not larger than 1.");
@@ -35,31 +38,30 @@ public class Utils {
     }
 
     int intervalWidth = maxIncl - minIncl;
-    int newMaxIncl = (int) (currentVal + intervalWidth * spreadRatio);
+    int newMaxIncl = (int) (currentVal + intervalWidth * spreadRatio + 1);
     if (newMaxIncl > maxIncl) {
       newMaxIncl = maxIncl;
     }
-    int newMinIncl = (int) (currentVal - intervalWidth * spreadRatio);
+    int newMinIncl = (int) (currentVal - intervalWidth * spreadRatio - 1);
     if (newMinIncl < minIncl) {
       newMinIncl = minIncl;
     }
     int newIntervalWidth = newMaxIncl - newMinIncl;
-
+    //    System.out.println("currentVal: "+currentVal+" spreadRatio: "+spreadRatio
+    //        +" minIncl: " + minIncl +  " maxIncl: " +maxIncl+ " intervalWidth: " + intervalWidth
+    //        + " newMinIncl: " + newMinIncl+ " newMaxIncl: "+ newMaxIncl
+    //        + " newIntervalWidth: " +newIntervalWidth);
     int returnVal = currentVal;
     Random rand = new Random();
     do {
+
       returnVal = rand.nextInt(newIntervalWidth + 1) + newMinIncl;
     } while (returnVal == currentVal);
 
     return returnVal;
   }
 
-  public static void main(String[] args) {
-    for (int i = 0; i < 40; i++) {
-      int randomInt = mutateInInterval(0, 20, 15, 0.5f);
-      System.out.print(randomInt + "  ");
-    }
-  }
+
 
 
   /**

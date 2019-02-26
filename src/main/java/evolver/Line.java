@@ -25,15 +25,15 @@ public class Line extends Trait {
   }
 
   @Override
-  void mutateShape() {
+  void mutateShape(float degree) {
     Random rand = new Random();
     if (rand.nextBoolean()) {
-      mutatePoint(p1);
+      mutatePoint(p1, degree);
     } else {
-      mutatePoint(p1);
+      mutatePoint(p1, degree);
     }
     oldLineWidth = lineWidth;
-    lineWidth = Utils.mutateInWholeInterval(1, maxLineWidth);
+    lineWidth = Utils.mutateInInterval(1, maxLineWidth, lineWidth, degree);
   }
 
   @Override
