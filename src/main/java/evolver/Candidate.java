@@ -10,17 +10,15 @@ import java.util.List;
 import java.util.Random;
 import javax.imageio.ImageIO;
 
+
 class Candidate {
 
-  //TODO: fler konstruktorer med andra alternativ?
 
   private static TargetImage targetImage = GraphicalEvolver.getTargetImage();
 
   private List<Trait> traitsList = new ArrayList<>();
+  private MutationInfo mutationInfo;
 
-  private long calculatedDifference;
-  private long successfulMutations;
-  private long maximumDifference;
   private int width;
   private int height;
   private Graphics2D candidateGraphics2D;
@@ -30,7 +28,7 @@ class Candidate {
   Candidate(int numberOfTraits) {
     width = targetImage.getImageWidth();
     height = targetImage.getImageHeight();
-    maximumDifference = width * height * 3 * 255;
+    mutationInfo = new MutationInfo(width, height);
 
     traitsList.add(new Background(width, height));
 
@@ -52,10 +50,10 @@ class Candidate {
     candidateGraphics2D = candidateBI.createGraphics();
 
     redrawTraits();
+    mutationInfo.setCalculatedDifference(
+        Differ.imageDifference(targetImage.getBufferedImage(), candidateBI));
 
-    calculatedDifference = Differ.imageDifference(targetImage.getBufferedImage(), candidateBI);
-    saveToFile("candidateInitialBI.png");
-    System.out.println("Skillnaden är: " + calculatedDifference);
+    System.out.println("Skillnaden är: " + mutationInfo.getCalculatedDifference());
 
 
   }
@@ -68,12 +66,14 @@ class Candidate {
     }
   }
 
+  MutationInfo getMutationInfo() {
+    return this.mutationInfo;
+  }
 
   void evolve(float degree) {
     Random rand = new Random();
     int randomTraitNr = rand.nextInt(traitsList.size());
 
-    System.out.print(" #" + randomTraitNr + " ");
     Trait randomTrait = traitsList.get(randomTraitNr);
 
     //Mutating
@@ -87,22 +87,14 @@ class Candidate {
     long differenceAfterMutation = Differ
         .imageDifference(targetImage.getBufferedImage(), candidateBI);
 
-    System.out
-        .print("efter: " + differenceAfterMutation + " before: " + calculatedDifference + " ");
-    if (differenceAfterMutation > calculatedDifference) {
-      System.out.print("(throw)");
+    if (differenceAfterMutation > mutationInfo.getCalculatedDifference()) {
       randomTrait.removeLastShapeMutation();
       randomTrait.removeLastColorMutation();
     } else {
-      System.out.print("(keep)");
-      calculatedDifference = differenceAfterMutation;
-      successfulMutations++;
+      mutationInfo.setCalculatedDifference(differenceAfterMutation);
+      mutationInfo.upSuccessfulMutations();
     }
-
-    System.out.print(" Successful mutations:" + successfulMutations + " ");
-    System.out
-        .printf("Fitness: %.2f", (1 - (float) calculatedDifference / maximumDifference) * 100);
-    System.out.println();
+    mutationInfo.upTotNumberOfMutations();
 
 
   }

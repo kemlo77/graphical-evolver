@@ -46,8 +46,8 @@ class UtilsTest {
   @DisplayName("min value equals max value")
   void throwsExceptionSpreadRatioTooSmall() {
     Exception exception = assertThrows(IllegalArgumentException.class, () ->
-        Utils.mutateInInterval(5, 3, 4, 0f));
-    assertEquals("maxStepPerc must be larger than 0.01 and not larger than 1.",
+        Utils.mutateInInterval(5, 3, 4, -0.01f));
+    assertEquals("maxStepPerc must be larger than 0 and not larger than 1.",
         exception.getMessage());
   }
 
@@ -56,7 +56,7 @@ class UtilsTest {
   void throwsExceptionSpreadRatioTooLarge() {
     Exception exception = assertThrows(IllegalArgumentException.class, () ->
         Utils.mutateInInterval(5, 3, 4, 1.001f));
-    assertEquals("maxStepPerc must be larger than 0.01 and not larger than 1.",
+    assertEquals("maxStepPerc must be larger than 0 and not larger than 1.",
         exception.getMessage());
   }
 
@@ -70,11 +70,11 @@ class UtilsTest {
     float intervalWidthPerc = 0.2f;
 
     int wholeInterval = maxValue - minValue;
-    int maxExpectedValue = (int) (currentValue + wholeInterval * intervalWidthPerc);
+    int maxExpectedValue = (int) (currentValue + wholeInterval * intervalWidthPerc + 1);
     if (maxExpectedValue > maxValue) {
       maxExpectedValue = maxValue;
     }
-    int minExpectedValue = (int) (currentValue - wholeInterval * intervalWidthPerc);
+    int minExpectedValue = (int) (currentValue - wholeInterval * intervalWidthPerc - 1);
     if (minExpectedValue < minValue) {
       minExpectedValue = minValue;
     }

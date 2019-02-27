@@ -24,9 +24,9 @@ public class GraphicalEvolver {
 
     try {
       targetImage = new TargetImage(
-          //new File(System.getProperty("user.dir") + "/160px-Mona_Lisa.PNG")
-          new File(System.getProperty("user.dir") + "/Mona_Lisa.png")
-      //new File("c:\\temp\\evolver\\160px-Mona_Lisa.png")
+          new File(System.getProperty("user.dir") + "/321px-Mona_Lisa.PNG")
+      //new File(System.getProperty("user.dir") + "/Mona_Lisa.png")
+      // new File("c:\\temp\\evolver\\160px-Mona_Lisa.png")
       );
 
     } catch (IOException e) {
@@ -35,27 +35,29 @@ public class GraphicalEvolver {
 
     }
 
-    Candidate candidate = new Candidate(30);
-    final LocalTime startTime = LocalTime.now();
+    for (int k = 0; k < 1; k++) {
+      Candidate candidate = new Candidate(30);
+      final LocalTime startTime = LocalTime.now();
 
-    int antalUpprepningar = 2000;
-    for (int i = 0; i < antalUpprepningar; i++) {
-      System.out.print(i + " ");
-      candidate.evolve(1 - ((float) i / antalUpprepningar) * 0.98f);
+      int antalUpprepningar = 2000;
+      for (int i = 0; i < antalUpprepningar; i++) {
+        candidate.evolve(1 - ((float) i / antalUpprepningar));
+      }
+
+      candidate.redrawTraits();
+      candidate.saveToFile(
+          "result_" + k + "_" + candidate.getMutationInfo().getFitnessPercentageString() + ".png");
+
+      LocalTime endTime = LocalTime.now();
+      Duration duration = Duration.between(startTime, endTime);
+      System.out
+          .println(antalUpprepningar + " upprepningar tog " + duration.toString() + " sekunder.");
+      System.out
+          .println("det blir " + (float) antalUpprepningar / duration.getSeconds() + " per sekund");
+
     }
 
-    candidate.redrawTraits();
-    candidate.saveToFile("result.png");
-
-    LocalTime endTime = LocalTime.now();
-    Duration duration = Duration.between(startTime, endTime);
-    System.out
-        .println(antalUpprepningar + " upprepningar tog " + duration.toString() + " sekunder.");
-    System.out
-        .println("det blir " + (float) antalUpprepningar / duration.getSeconds() + " per sekund");
-
-    System.out.println(candidate.toSvg());
-
+    //System.out.println(candidate.toSvg());
 
   }
 

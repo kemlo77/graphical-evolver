@@ -8,7 +8,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 abstract class Trait {
 
-  //TODO: borde inte color vara private?
   private Color color;
   private Color oldColor;
   private Point pointThatWasMutated;
@@ -31,6 +30,10 @@ abstract class Trait {
   abstract void mutateShape(float degree);
 
   abstract void removeLastShapeMutation();
+
+  abstract void draw(Graphics2D graphics);
+
+  abstract String toSvg();
 
   void setWidth(int width) {
     this.width = width;
@@ -91,10 +94,6 @@ abstract class Trait {
     deltaY = 0;
   }
 
-
-  abstract void draw(Graphics2D graphics);
-
-  abstract String toSvg();
 
   String svgColorInfo() {
     return

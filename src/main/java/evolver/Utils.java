@@ -20,9 +20,9 @@ class Utils {
     //TODO: tester vid brett intervall, smalt intervall,
     // när current är nära minIncl eller maxIncl eller i mitten av intervallet
     //TODO:  tester vid ett smalt intervall
-    if (spreadRatio < 0.01f || spreadRatio > 1) {
+    if (spreadRatio < 0 || spreadRatio > 1) {
       throw new IllegalArgumentException(
-          "maxStepPerc must be larger than 0.01 and not larger than 1.");
+          "maxStepPerc must be larger than 0 and not larger than 1.");
     }
     if (minIncl == maxIncl) {
       throw new IllegalArgumentException("minIncl cannot be equal to maxIncl.");
@@ -47,10 +47,10 @@ class Utils {
       newMinIncl = minIncl;
     }
     int newIntervalWidth = newMaxIncl - newMinIncl;
-    //    System.out.println("currentVal: "+currentVal+" spreadRatio: "+spreadRatio
-    //        +" minIncl: " + minIncl +  " maxIncl: " +maxIncl+ " intervalWidth: " + intervalWidth
-    //        + " newMinIncl: " + newMinIncl+ " newMaxIncl: "+ newMaxIncl
-    //        + " newIntervalWidth: " +newIntervalWidth);
+    //        System.out.println("currentVal: "+currentVal+" spreadRatio: "+spreadRatio
+    //            +" minIncl: " + minIncl +  " maxIncl: " +maxIncl+ " intervalWidth: "+intervalWidth
+    //            + " newMinIncl: " + newMinIncl+ " newMaxIncl: "+ newMaxIncl
+    //            + " newIntervalWidth: " +newIntervalWidth);
     int returnVal = currentVal;
     Random rand = new Random();
     do {
