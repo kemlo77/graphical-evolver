@@ -53,8 +53,7 @@ class Candidate {
     mutationInfo.setCalculatedDifference(
         Differ.imageDifference(targetImage.getBufferedImage(), candidateBI));
 
-    System.out.println("Skillnaden är: " + mutationInfo.getCalculatedDifference());
-
+    //System.out.println("Skillnaden är: " + mutationInfo.getCalculatedDifference());
 
   }
 
@@ -71,6 +70,7 @@ class Candidate {
   }
 
   void evolve(float degree) {
+    mutationInfo.startTime();
     Random rand = new Random();
     int randomTraitNr = rand.nextInt(traitsList.size());
 
@@ -83,6 +83,7 @@ class Candidate {
     //Drawing
     redrawTraits();
 
+    mutationInfo.middleTime();
     //Comparing
     long differenceAfterMutation = Differ
         .imageDifference(targetImage.getBufferedImage(), candidateBI);
@@ -95,6 +96,7 @@ class Candidate {
       mutationInfo.upSuccessfulMutations();
     }
     mutationInfo.upTotNumberOfMutations();
+    mutationInfo.stopTime();
 
 
   }

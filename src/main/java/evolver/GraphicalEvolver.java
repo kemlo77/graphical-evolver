@@ -2,8 +2,6 @@ package evolver;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.Duration;
-import java.time.LocalTime;
 
 public class GraphicalEvolver {
 
@@ -24,9 +22,9 @@ public class GraphicalEvolver {
 
     try {
       targetImage = new TargetImage(
-          new File(System.getProperty("user.dir") + "/321px-Mona_Lisa.PNG")
-      //new File(System.getProperty("user.dir") + "/Mona_Lisa.png")
-      // new File("c:\\temp\\evolver\\160px-Mona_Lisa.png")
+          //    new File(System.getProperty("user.dir") + "/321px-Mona_Lisa.PNG")
+          //new File(System.getProperty("user.dir") + "/Mona_Lisa.png")
+          new File("c:\\temp\\evolver\\160px-Mona_Lisa.png")
       );
 
     } catch (IOException e) {
@@ -35,25 +33,21 @@ public class GraphicalEvolver {
 
     }
 
-    for (int k = 0; k < 1; k++) {
+    for (int k = 0; k < 10; k++) {
       Candidate candidate = new Candidate(30);
-      final LocalTime startTime = LocalTime.now();
 
-      int antalUpprepningar = 2000;
+      int antalUpprepningar = 20_000;
       for (int i = 0; i < antalUpprepningar; i++) {
         candidate.evolve(1 - ((float) i / antalUpprepningar));
       }
 
+      //TODO: här borde jag göra en "snygg" redraw
       candidate.redrawTraits();
       candidate.saveToFile(
-          "result_" + k + "_" + candidate.getMutationInfo().getFitnessPercentageString() + ".png");
+          "result_" + k + "_"
+              + candidate.getMutationInfo().getFitnessPercentageString() + ".png");
 
-      LocalTime endTime = LocalTime.now();
-      Duration duration = Duration.between(startTime, endTime);
-      System.out
-          .println(antalUpprepningar + " upprepningar tog " + duration.toString() + " sekunder.");
-      System.out
-          .println("det blir " + (float) antalUpprepningar / duration.getSeconds() + " per sekund");
+      System.out.println(candidate.getMutationInfo());
 
     }
 

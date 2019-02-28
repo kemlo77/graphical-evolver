@@ -2,7 +2,6 @@ package evolver;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -43,15 +42,23 @@ public class Polygon extends Trait {
 
   @Override
   public void draw(Graphics2D g2d) {
-    Path2D.Double polygon = new Path2D.Double();
-    polygon.moveTo(pointList.get(0).x, pointList.get(0).y);
+    //TODO:Evaluating these two ways of plotting a polygon
+    //    Path2D.Double polygon = new Path2D.Double();
+    //    polygon.moveTo(pointList.get(0).x, pointList.get(0).y);
+    //
+    //    for (int i = 1; i < pointList.size(); i++) {
+    //      polygon.lineTo(pointList.get(i).x, pointList.get(i).y);
+    //    }
+    //    polygon.closePath();
+    //    g2d.setPaint(getColor());
+    //    g2d.fill(polygon);
 
+    java.awt.Polygon p = new java.awt.Polygon();
     for (int i = 1; i < pointList.size(); i++) {
-      polygon.lineTo(pointList.get(i).x, pointList.get(i).y);
+      p.addPoint(pointList.get(i).x, pointList.get(i).y);
     }
-    polygon.closePath();
     g2d.setPaint(getColor());
-    g2d.fill(polygon);
+    g2d.fillPolygon(p);
   }
 
   @Override
