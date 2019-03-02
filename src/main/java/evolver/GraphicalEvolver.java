@@ -45,7 +45,7 @@ public class GraphicalEvolver {
       candidate.redrawTraits();
       candidate.saveToFile(
           "result_" + k + "_"
-              + candidate.getMutationInfo().getFitnessPercentageString() + ".png");
+              + candidate.getMutationInfo().getFitnessPercentageString() + ".png", true);
 
       System.out.println(candidate.getMutationInfo());
 

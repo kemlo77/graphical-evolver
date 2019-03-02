@@ -2,6 +2,7 @@ package evolver;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -101,11 +102,35 @@ class Candidate {
 
   }
 
-  void saveToFile(String fileName) {
+  void saveToFile(String fileName, boolean inHighQuality) {
+    BufferedImage fancyRender = new BufferedImage(width, height, targetImage.getImageType());
+    Graphics2D g2d = fancyRender.createGraphics();
+
+    if (inHighQuality) {
+      g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+          RenderingHints.VALUE_ANTIALIAS_ON);
+      g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+          RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+      g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
+          RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+      g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
+          RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+      g2d.setRenderingHint(RenderingHints.KEY_DITHERING,
+          RenderingHints.VALUE_DITHER_ENABLE);
+      g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+          RenderingHints.VALUE_RENDER_QUALITY);
+    }
+
+    g2d.setBackground(Color.WHITE);
+    g2d.clearRect(0, 0, width, height);
+    for (Trait trait : traitsList) {
+      trait.draw(g2d);
+    }
+
     String pathToNewFile = System.getProperty("user.dir") + "/" + fileName;
     System.out.println("Saving candidate to: " + pathToNewFile);
     try {
-      ImageIO.write(candidateBI, "png", new File(pathToNewFile));
+      ImageIO.write(fancyRender, "png", new File(pathToNewFile));
     } catch (IOException e) {
       System.out.println("Could not save candidate image file to: " + pathToNewFile);
       e.printStackTrace();
