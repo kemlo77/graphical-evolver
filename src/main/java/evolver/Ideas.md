@@ -17,6 +17,12 @@
 * se om det går att rita effektivare
 * kolla upp att använda java awt polygon
 * det finns ju andra metoder för att rita polygoner, som kanske är effektivare?
+* Hitta ett sätt att utvärdera olika BufferedImage inställningar
+*  https://stackoverflow.com/questions/148478/java-2d-drawing-optimal-performance
+*  https://stackoverflow.com/questions/196890/java2d-performance-issues
+* Återskapa den gamla diffen och kolla prestandaskillnad. Kan ev vara
+  användbar om jag ändrar inställningar för BufferedImage
+
 
 # Saknad funktionalitet
 * Göra möjligt att importera olika bildformat, inte bara png
@@ -33,6 +39,7 @@
   under 25% så muteras bara en färg eller transparans
   alternativt bara ett shape
 * Ändra maxvärde för LineWidth och CircleDiameter
+
 
 
 

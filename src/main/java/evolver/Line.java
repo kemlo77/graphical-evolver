@@ -11,7 +11,7 @@ public class Line extends Trait {
   private Point p2;
   private int lineWidth;
   private int oldLineWidth;
-  private final int maxLineWidth = 5;
+  private final int maxLineWidth = 7;
 
 
   Line(int width, int height) {

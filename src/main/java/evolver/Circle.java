@@ -9,11 +9,12 @@ class Circle extends Trait {
   private int diameter;
   private int oldDiameter;
   //TODO: Annat max-värde för cirkel-diameter
-  private final int maxDiameter = 20;
+  private final int maxDiameter;
 
   Circle(int width, int height) {
     super(width, height);
 
+    this.maxDiameter = height / 2;
     this.midPoint = generateRandomPoint();
     this.diameter = Utils.mutateInWholeInterval(1, maxDiameter);
 

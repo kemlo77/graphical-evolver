@@ -42,17 +42,7 @@ public class Polygon extends Trait {
 
   @Override
   public void draw(Graphics2D g2d) {
-    //TODO:Evaluating these two ways of plotting a polygon
-    //    Path2D.Double polygon = new Path2D.Double();
-    //    polygon.moveTo(pointList.get(0).x, pointList.get(0).y);
-    //
-    //    for (int i = 1; i < pointList.size(); i++) {
-    //      polygon.lineTo(pointList.get(i).x, pointList.get(i).y);
-    //    }
-    //    polygon.closePath();
-    //    g2d.setPaint(getColor());
-    //    g2d.fill(polygon);
-
+    //Seems to be about 7% faster than drawing with: moveTo, lineTo, closePath...
     java.awt.Polygon p = new java.awt.Polygon();
     for (int i = 1; i < pointList.size(); i++) {
       p.addPoint(pointList.get(i).x, pointList.get(i).y);
