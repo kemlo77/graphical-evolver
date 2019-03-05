@@ -20,38 +20,40 @@ public class GraphicalEvolver {
    */
   public static void main(String[] args) {
 
+    if (args.length < 4) {
+      System.out.println("file-name mutations rounds file-suffix");
+      System.exit(1);
+    }
+    String fileName = args[0];
+    int numberOfMutations = Integer.parseInt(args[1]);
+    int numberOfRounds = Integer.parseInt(args[2]);
+    String fileSuffix = args[3];
+
     try {
-      targetImage = new TargetImage(
-          //    new File(System.getProperty("user.dir") + "/321px-Mona_Lisa.PNG")
-          //new File(System.getProperty("user.dir") + "/Mona_Lisa.png")
-          new File("c:\\temp\\evolver\\160px-Mona_Lisa.png")
-      );
+      targetImage = new TargetImage(new File(fileName));
+
+      for (int k = 0; k < numberOfRounds; k++) {
+        Candidate candidate = new Candidate(30);
+
+        for (int i = 0; i < numberOfMutations; i++) {
+          candidate.evolve(1 - ((float) i / numberOfMutations));
+        }
+
+        System.out.println(candidate.getMutationInfo());
+        candidate.saveToFile(
+            "result_"
+                + candidate.getMutationInfo().getFitnessPercentageString() + "_" + (k + 1)
+                + fileSuffix
+                + ".png", true);
+      }
+
+      //System.out.println(candidate.toSvg());
 
     } catch (IOException e) {
       System.out.println("Could not load file specified by user.");
       e.printStackTrace();
-
     }
 
-    for (int k = 0; k < 10; k++) {
-      Candidate candidate = new Candidate(30);
-
-      int antalUpprepningar = 20_000;
-      for (int i = 0; i < antalUpprepningar; i++) {
-        candidate.evolve(1 - ((float) i / antalUpprepningar));
-      }
-
-      //TODO: här borde jag göra en "snygg" redraw
-      candidate.redrawTraits();
-      candidate.saveToFile(
-          "result_" + k + "_"
-              + candidate.getMutationInfo().getFitnessPercentageString() + ".png", true);
-
-      System.out.println(candidate.getMutationInfo());
-
-    }
-
-    //System.out.println(candidate.toSvg());
 
   }
 

@@ -2,6 +2,7 @@ package evolver;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 class MutationInfo {
@@ -77,7 +78,12 @@ class MutationInfo {
   //TODO: lägga in mer att skriva ut här
   @Override
   public String toString() {
-    return "Fitness: " + getFitnessPercentageString() + "% "
+    LocalTime lt = LocalTime.now();
+    DateTimeFormatter mydtf2 = DateTimeFormatter.ofPattern("HH:mm");
+    String timeStamp = lt.format(mydtf2);
+
+    return "(" + timeStamp + ") "
+        + "Fitness: " + getFitnessPercentageString() + "% "
         + totNumberOfMutations + " (" + successfulMutations + ") mutations in "
         + totMeasuredDuration + " "
         + "(" + ((float) totNumberOfMutations / totMeasuredDuration.getSeconds()) + "/s) "
