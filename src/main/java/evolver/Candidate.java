@@ -127,7 +127,7 @@ class Candidate {
       trait.draw(g2d);
     }
 
-    String pathToNewFile = System.getProperty("user.dir") + "/" + fileName;
+    String pathToNewFile = System.getProperty("user.dir") + File.separator + fileName;
     System.out.println("Saving candidate to: " + pathToNewFile);
     try {
       ImageIO.write(fancyRender, "png", new File(pathToNewFile));

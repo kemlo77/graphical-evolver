@@ -78,7 +78,8 @@ class MutationInfo {
   @Override
   public String toString() {
     return "Fitness: " + getFitnessPercentageString() + "% "
-        + totNumberOfMutations + " mutations in " + totMeasuredDuration + " "
+        + totNumberOfMutations + " (" + successfulMutations + ") mutations in "
+        + totMeasuredDuration + " "
         + "(" + ((float) totNumberOfMutations / totMeasuredDuration.getSeconds()) + "/s) "
         + firstDurationTot.getSeconds() + "s och " + secondDurationTot.getSeconds() + "s";
   }
