@@ -41,6 +41,10 @@ class MutationInfo {
 
   }
 
+  long getMaximumDifference() {
+    return this.maximumDifference;
+  }
+
   void setCalculatedDifference(long difference) {
     this.calculatedDifference = difference;
   }

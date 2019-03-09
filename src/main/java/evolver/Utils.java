@@ -34,7 +34,8 @@ class Utils {
       throw new IllegalArgumentException("Parameters must be a positive number or zero.");
     }
     if (currentVal < minIncl || currentVal > maxIncl) {
-      throw new IllegalArgumentException("currentVal must be between minIncl and maxIncl");
+      throw new IllegalArgumentException(
+          "currentVal must be between minIncl and maxIncl but is " + currentVal);
     }
 
     int intervalWidth = maxIncl - minIncl;
@@ -60,8 +61,6 @@ class Utils {
 
     return returnVal;
   }
-
-
 
 
   /**

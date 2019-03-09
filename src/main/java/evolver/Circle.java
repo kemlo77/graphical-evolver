@@ -17,6 +17,7 @@ class Circle extends Trait {
     this.maxDiameter = height / 2;
     this.midPoint = generateRandomPoint();
     this.diameter = Utils.mutateInWholeInterval(1, maxDiameter);
+    this.oldDiameter = this.diameter;
 
   }
 

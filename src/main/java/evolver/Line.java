@@ -21,6 +21,7 @@ public class Line extends Trait {
     this.p2 = generateRandomPoint();
 
     this.lineWidth = Utils.mutateInWholeInterval(1, maxLineWidth);
+    this.oldLineWidth = this.lineWidth;
 
   }
 
