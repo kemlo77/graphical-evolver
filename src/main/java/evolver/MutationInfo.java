@@ -13,7 +13,6 @@ class MutationInfo {
   private long maximumDifference;
   private LocalTime startTime;
   private LocalTime middleTime;
-  private LocalTime stopTime;
   private Duration firstDurationTot = Duration.ofSeconds(0);
   private Duration secondDurationTot = Duration.ofSeconds(0);
   private Duration totMeasuredDuration = Duration.ofSeconds(0);
@@ -34,7 +33,7 @@ class MutationInfo {
   }
 
   void stopTime() {
-    stopTime = LocalTime.now();
+    LocalTime stopTime = LocalTime.now();
     this.firstDurationTot = this.firstDurationTot.plus(Duration.between(startTime, middleTime));
     this.secondDurationTot = this.secondDurationTot.plus(Duration.between(middleTime, stopTime));
     this.totMeasuredDuration = this.firstDurationTot.plus(this.secondDurationTot);
@@ -79,7 +78,6 @@ class MutationInfo {
 
   }
 
-  //TODO: lägga in mer att skriva ut här
   @Override
   public String toString() {
     LocalTime lt = LocalTime.now();
@@ -88,10 +86,19 @@ class MutationInfo {
 
     return "(" + timeStamp + ") "
         + "Fitness: " + getFitnessPercentageString() + "% "
-        + totNumberOfMutations + " (" + successfulMutations + ") mutations in "
-        + totMeasuredDuration + " "
-        + "(" + ((float) totNumberOfMutations / totMeasuredDuration.getSeconds()) + "/s) "
-        + firstDurationTot.getSeconds() + "s och " + secondDurationTot.getSeconds() + "s";
+        + String.format("%10d", totNumberOfMutations)
+
+        + " mutations in "
+        + totMeasuredDuration.getSeconds() + "s "
+
+        + "("
+        + String.format("%.1f", (float) totNumberOfMutations / totMeasuredDuration.getSeconds())
+        + "/s) "
+        + String.format("%20s", "[" + successfulMutations + " successful] ")
+        + "Spent "
+        + firstDurationTot.getSeconds()
+        + "s redrawing and "
+        + secondDurationTot.getSeconds() + "s comparing.";
   }
 
 }
