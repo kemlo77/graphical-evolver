@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.Locale;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 abstract class Trait {
@@ -15,6 +16,7 @@ abstract class Trait {
   private int deltaY = 0;
   private int width;
   private int height;
+  private boolean dead = false;
 
   Trait(int width, int height) {
     this.width = width;
@@ -39,6 +41,14 @@ abstract class Trait {
     this.width = width;
   }
 
+  void setDead() {
+    this.dead = true;
+  }
+
+  boolean isDead() {
+    return this.dead;
+  }
+
   void setHeight(int height) {
     this.height = height;
   }
@@ -58,10 +68,37 @@ abstract class Trait {
   void mutateColor(float degree) {
     oldColor = color;
 
-    int newR = Utils.mutateInInterval(0, 255, color.getRed(), degree);
-    int newG = Utils.mutateInInterval(0, 255, color.getGreen(), degree);
-    int newB = Utils.mutateInInterval(0, 255, color.getBlue(), degree);
-    int newAlpha = Utils.mutateInInterval(0, 255, color.getAlpha(), degree);
+    Random rand = new Random();
+    final int slumpNr = rand.nextInt(5);
+
+    int newR = color.getRed();
+    int newG = color.getGreen();
+    int newB = color.getBlue();
+    int newAlpha = color.getAlpha();
+
+    switch (slumpNr) {
+      case 0:
+        newR = Utils.mutateInInterval(0, 255, color.getRed(), degree);
+        break;
+      case 1:
+        newG = Utils.mutateInInterval(0, 255, color.getGreen(), degree);
+        break;
+      case 2:
+        newB = Utils.mutateInInterval(0, 255, color.getBlue(), degree);
+        break;
+      case 3:
+        newAlpha = Utils.mutateInInterval(0, 255, color.getAlpha(), degree);
+        break;
+      case 4:
+        newR = Utils.mutateInInterval(0, 255, color.getRed(), degree);
+        newG = Utils.mutateInInterval(0, 255, color.getGreen(), degree);
+        newB = Utils.mutateInInterval(0, 255, color.getBlue(), degree);
+        newAlpha = Utils.mutateInInterval(0, 255, color.getAlpha(), degree);
+        break;
+      default:
+        break;
+    }
+
     color = new Color(newR, newG, newB, newAlpha);
   }
 
@@ -89,18 +126,20 @@ abstract class Trait {
   }
 
   void removeLastPointMutation() {
-    pointThatWasMutated.translate(-deltaX, -deltaY);
-    deltaX = 0;
-    deltaY = 0;
+    if (pointThatWasMutated != null) {
+      pointThatWasMutated.translate(-deltaX, -deltaY);
+      deltaX = 0;
+      deltaY = 0;
+    }
   }
 
 
   String svgColorInfo() {
     return
-        "rgb("
+        "\"rgb("
             + color.getRed() + ","
             + color.getGreen() + ","
-            + color.getBlue() + ") "
+            + color.getBlue() + ")\" "
             + "opacity=\""
             + String.format(Locale.ROOT, "%.3f", color.getAlpha() / 255f) + "\" ";
   }
