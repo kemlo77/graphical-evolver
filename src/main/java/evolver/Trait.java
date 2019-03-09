@@ -119,6 +119,10 @@ abstract class Trait {
   void mutatePoint(Point pointToBeMutated, float degree) {
     int currentX = (int) pointToBeMutated.getX();
     int currentY = (int) pointToBeMutated.getY();
+
+    //TODO: skriv om detta så att det är tillåtet att deltaX xor deltaY slumpas till 0
+    //ok för koordinater, men inte för färger
+    //alltså kanske skriva om mutateInInterval
     deltaX = Utils.mutateInInterval(0, width, currentX, degree) - currentX;
     deltaY = Utils.mutateInInterval(0, height, currentY, degree) - currentY;
     pointToBeMutated.translate(deltaX, deltaY);

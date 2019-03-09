@@ -33,8 +33,76 @@ class Candidate {
 
     traitsList.add(new Background(width, height));
 
+    addRandomTraits(numberOfTraits);
+
+    candidateBI = new BufferedImage(width, height, targetImage.getImageType());
+    candidateGraphics2D = candidateBI.createGraphics();
+
+    redrawAllTraits();
+    mutationInfo.setCalculatedDifference(calculateDifference());
+  }
+
+
+  private void redrawTraitsExceptThisOne(int skipThis) {
+    candidateGraphics2D.setBackground(Color.WHITE);
+    candidateGraphics2D.clearRect(0, 0, width, height);
+    for (int i = 0; i < traitsList.size(); i++) {
+      if (i == skipThis) {
+        continue;
+      }
+      traitsList.get(i).draw(candidateGraphics2D);
+    }
+  }
+
+
+  private void redrawAllTraits() {
+    redrawTraitsExceptThisOne(-1);
+  }
+
+
+  private long calculateDifference() {
+    return Differ.imageDifference(targetImage.getBufferedImage(), candidateBI);
+  }
+
+
+  MutationInfo getMutationInfo() {
+    return this.mutationInfo;
+  }
+
+
+  int removeTraitsThatContributeUnderLimit(float contributionLimit) {
+    float currentFitness = mutationInfo.getFitnessPercentage();
+    int antalTraits = traitsList.size();
+    for (int i = 0; i < antalTraits; i++) {
+
+      redrawTraitsExceptThisOne(i);
+      long calculatedDifference = calculateDifference();
+      float newCalculatedFitness =
+          (1 - (float) calculatedDifference / mutationInfo.getMaximumDifference()) * 100;
+
+      System.out.println(""
+          + currentFitness + " - "
+          + newCalculatedFitness + " = "
+          + (currentFitness - newCalculatedFitness));
+
+      if ((currentFitness - newCalculatedFitness) < contributionLimit) {
+        traitsList.get(i).setDead();
+      }
+
+    }
+    traitsList.removeIf(Trait::isDead);
+    int numberOfTraitsRemoved = (antalTraits - traitsList.size());
+    System.out.println("Removed " + numberOfTraitsRemoved + " traits.");
+    redrawAllTraits();
+    mutationInfo.setCalculatedDifference(calculateDifference());
+
+    return numberOfTraitsRemoved;
+  }
+
+
+  void addRandomTraits(int numberOfNewTraits) {
     Random rand = new Random();
-    for (int i = 0; i < numberOfTraits; i++) {
+    for (int i = 0; i < numberOfNewTraits; i++) {
       int randomInt = rand.nextInt(3);
       if (randomInt == 0) {
         traitsList.add(new Polygon(6, width, height));
@@ -46,29 +114,9 @@ class Candidate {
         traitsList.add(new Line(width, height));
       }
     }
-
-    candidateBI = new BufferedImage(width, height, targetImage.getImageType());
-    candidateGraphics2D = candidateBI.createGraphics();
-
-    redrawTraits();
-    mutationInfo.setCalculatedDifference(
-        Differ.imageDifference(targetImage.getBufferedImage(), candidateBI));
-
-    //System.out.println("Skillnaden är: " + mutationInfo.getCalculatedDifference());
-
+    System.out.println("Added " + numberOfNewTraits + " new traits.");
   }
 
-  void redrawTraits() {
-    candidateGraphics2D.setBackground(Color.WHITE);
-    candidateGraphics2D.clearRect(0, 0, width, height);
-    for (Trait trait : traitsList) {
-      trait.draw(candidateGraphics2D);
-    }
-  }
-
-  MutationInfo getMutationInfo() {
-    return this.mutationInfo;
-  }
 
   void evolve(float degree) {
     mutationInfo.startTime();
@@ -78,16 +126,16 @@ class Candidate {
     Trait randomTrait = traitsList.get(randomTraitNr);
 
     //Mutating
-    randomTrait.mutateShape(degree);
+    //TODO: Ändra hur/vad som muteras beroende på degree. T.ex bara color eller bara shape
     randomTrait.mutateColor(degree);
+    randomTrait.mutateShape(degree);
 
     //Drawing
-    redrawTraits();
+    redrawAllTraits();
 
     mutationInfo.middleTime();
     //Comparing
-    long differenceAfterMutation = Differ
-        .imageDifference(targetImage.getBufferedImage(), candidateBI);
+    long differenceAfterMutation = calculateDifference();
 
     if (differenceAfterMutation > mutationInfo.getCalculatedDifference()) {
       randomTrait.removeLastShapeMutation();
@@ -98,9 +146,8 @@ class Candidate {
     }
     mutationInfo.upTotNumberOfMutations();
     mutationInfo.stopTime();
-
-
   }
+
 
   void saveToFile(String fileName, boolean inHighQuality) {
     BufferedImage fancyRender = new BufferedImage(width, height, targetImage.getImageType());
@@ -150,6 +197,5 @@ class Candidate {
     sb.append("</svg>");
     return sb.toString();
   }
-
 
 }
