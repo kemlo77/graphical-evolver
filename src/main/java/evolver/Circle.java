@@ -10,10 +10,9 @@ class Circle extends Trait {
   private int oldDiameter;
   private final int maxDiameter;
 
-  Circle(int width, int height) {
-    super(width, height);
-
-    this.maxDiameter = height / 2;
+  Circle() {
+    //TODO:Inventera vilka filer som refererar till TargetImage.getImageHeight eller width
+    this.maxDiameter = TargetImage.getImageHeight() / 2;
     this.midPoint = generateRandomPoint();
     this.diameter = Utils.mutateInWholeInterval(1, maxDiameter);
     this.oldDiameter = this.diameter;

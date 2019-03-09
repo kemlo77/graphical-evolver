@@ -14,14 +14,9 @@ abstract class Trait {
   private Point pointThatWasMutated;
   private int deltaX = 0;
   private int deltaY = 0;
-  private int width;
-  private int height;
   private boolean dead = false;
 
-  Trait(int width, int height) {
-    this.width = width;
-    this.height = height;
-
+  Trait() {
     int r = ThreadLocalRandom.current().nextInt(0, 255);
     int g = ThreadLocalRandom.current().nextInt(0, 255);
     int b = ThreadLocalRandom.current().nextInt(0, 255);
@@ -37,20 +32,12 @@ abstract class Trait {
 
   abstract String toSvg();
 
-  int getWidth() {
-    return width;
-  }
-
   void setDead() {
     this.dead = true;
   }
 
   boolean isDead() {
     return this.dead;
-  }
-
-  int getHeight() {
-    return height;
   }
 
   Color getColor() {
@@ -103,8 +90,8 @@ abstract class Trait {
   }
 
   Point generateRandomPoint() {
-    int x = ThreadLocalRandom.current().nextInt(0, width + 1);
-    int y = ThreadLocalRandom.current().nextInt(0, height + 1);
+    int x = ThreadLocalRandom.current().nextInt(0, TargetImage.getImageWidth() + 1);
+    int y = ThreadLocalRandom.current().nextInt(0, TargetImage.getImageHeight() + 1);
     return new Point(x, y);
   }
 
@@ -115,8 +102,8 @@ abstract class Trait {
     //TODO: skriv om detta så att det är tillåtet att deltaX xor deltaY slumpas till 0
     //ok för koordinater, men inte för färger
     //alltså kanske skriva om mutateInInterval
-    deltaX = Utils.mutateInInterval(0, width, currentX, degree) - currentX;
-    deltaY = Utils.mutateInInterval(0, height, currentY, degree) - currentY;
+    deltaX = Utils.mutateInInterval(0, TargetImage.getImageWidth(), currentX, degree) - currentX;
+    deltaY = Utils.mutateInInterval(0, TargetImage.getImageHeight(), currentY, degree) - currentY;
     pointToBeMutated.translate(deltaX, deltaY);
     pointThatWasMutated = pointToBeMutated;
   }

@@ -14,9 +14,7 @@ public class Line extends Trait {
   private final int maxLineWidth = 7;
 
 
-  Line(int width, int height) {
-    super(width, height);
-
+  Line() {
     this.p1 = generateRandomPoint();
     this.p2 = generateRandomPoint();
 

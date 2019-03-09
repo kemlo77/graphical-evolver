@@ -17,9 +17,7 @@ public class Polygon extends Trait {
   private List<Point> pointList;
 
 
-  Polygon(int numberOfVertices, int width, int height) {
-    super(width, height);
-
+  Polygon(int numberOfVertices) {
     pointList = new ArrayList<>();
     for (int i = 0; i < numberOfVertices; i++) {
       pointList.add(generateRandomPoint());

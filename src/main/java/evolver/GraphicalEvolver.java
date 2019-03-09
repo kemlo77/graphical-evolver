@@ -6,17 +6,9 @@ import java.io.IOException;
 public class GraphicalEvolver {
 
 
-  private static TargetImage targetImage;
-
-  static TargetImage getTargetImage() {
-    return targetImage;
-  }
-
-
   /**
-   * Main method that kick starts the simulation.
-   *
-   * @param args Not used.
+   * Main method that kick-starts the simulation.
+   * @param args file-name traits mutations rounds file-suffix
    */
   public static void main(String[] args) {
 
@@ -37,7 +29,7 @@ public class GraphicalEvolver {
     //    int numberOfTraits = 20;
 
     try {
-      targetImage = new TargetImage(new File(fileName));
+      TargetImage.setTargetImage(new File(fileName));
 
       for (int k = 0; k < numberOfRounds; k++) {
 
@@ -65,7 +57,7 @@ public class GraphicalEvolver {
             "result_"
                 + candidate.getMutationInfo().getFitnessPercentageString() + "_" + (k + 1)
                 + fileSuffix
-                + ".png", true);
+                + ".png");
 
         //System.out.println(candidate.toSvg());
       }

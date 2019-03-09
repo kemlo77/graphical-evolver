@@ -4,8 +4,7 @@ import java.awt.Graphics2D;
 
 class Background extends Trait {
 
-  Background(int width, int height) {
-    super(width, height);
+  Background() {
   }
 
   @Override
@@ -21,13 +20,14 @@ class Background extends Trait {
   @Override
   void draw(Graphics2D g2d) {
     g2d.setPaint(getColor());
-    g2d.fillRect(0, 0, getWidth(), getHeight());
+    g2d.fillRect(0, 0, TargetImage.getImageWidth(), TargetImage.getImageHeight());
   }
 
 
   @Override
   public String toSvg() {
-    return "<rect width=\"" + getWidth() + "\" height=\"" + getHeight() + "\""
+    return "<rect width=\"" + TargetImage.getImageWidth() + "\" height=\"" + TargetImage
+        .getImageHeight() + "\""
         + " fill=" + super.svgColorInfo() + "/>";
   }
 }

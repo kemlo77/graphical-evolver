@@ -10,18 +10,17 @@ class MutationInfo {
   private long calculatedDifference;
   private long successfulMutations;
   private long totNumberOfMutations;
-  private long maximumDifference;
+
   private LocalTime startTime;
   private LocalTime middleTime;
   private Duration firstDurationTot = Duration.ofSeconds(0);
   private Duration secondDurationTot = Duration.ofSeconds(0);
   private Duration totMeasuredDuration = Duration.ofSeconds(0);
 
-  MutationInfo(int width, int height) {
-    this.maximumDifference = width * height * 3 * 255;
+  MutationInfo() {
     this.successfulMutations = 0;
     this.totNumberOfMutations = 0;
-    this.calculatedDifference = maximumDifference;
+    this.calculatedDifference = TargetImage.getMaximumDifference();
   }
 
   void startTime() {
@@ -40,10 +39,6 @@ class MutationInfo {
 
   }
 
-  long getMaximumDifference() {
-    return this.maximumDifference;
-  }
-
   void setCalculatedDifference(long difference) {
     this.calculatedDifference = difference;
   }
@@ -56,20 +51,12 @@ class MutationInfo {
     this.successfulMutations++;
   }
 
-  public long getSuccessfulMutations() {
-    return this.successfulMutations;
-  }
-
   void upTotNumberOfMutations() {
     this.totNumberOfMutations++;
   }
 
-  public long getTotNumberOfMutations() {
-    return this.totNumberOfMutations;
-  }
-
   float getFitnessPercentage() {
-    return (1 - (float) this.calculatedDifference / this.maximumDifference) * 100;
+    return (1 - (float) this.calculatedDifference / TargetImage.getMaximumDifference()) * 100;
   }
 
   String getFitnessPercentageString() {
