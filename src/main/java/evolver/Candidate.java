@@ -22,6 +22,7 @@ class Candidate {
 
   private int width;
   private int height;
+  private int imageType;
   private Graphics2D candidateGraphics2D;
   private BufferedImage candidateBI;
 
@@ -29,13 +30,14 @@ class Candidate {
   Candidate(int numberOfTraits) {
     width = targetImage.getImageWidth();
     height = targetImage.getImageHeight();
+    imageType = targetImage.getImageType();
     mutationInfo = new MutationInfo(width, height);
 
     traitsList.add(new Background(width, height));
 
     addRandomTraits(numberOfTraits);
 
-    candidateBI = new BufferedImage(width, height, targetImage.getImageType());
+    candidateBI = new BufferedImage(width, height, imageType);
     candidateGraphics2D = candidateBI.createGraphics();
     candidateGraphics2D.setClip(0, 0, width, height);
 
@@ -151,7 +153,7 @@ class Candidate {
 
 
   void saveToFile(String fileName, boolean inHighQuality) {
-    BufferedImage fancyRender = new BufferedImage(width, height, targetImage.getImageType());
+    BufferedImage fancyRender = new BufferedImage(width, height, imageType);
     Graphics2D g2d = fancyRender.createGraphics();
     g2d.setClip(0, 0, width, height);
 
