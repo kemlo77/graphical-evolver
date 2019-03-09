@@ -37,6 +37,7 @@ class Candidate {
 
     candidateBI = new BufferedImage(width, height, targetImage.getImageType());
     candidateGraphics2D = candidateBI.createGraphics();
+    candidateGraphics2D.setClip(0, 0, width, height);
 
     redrawAllTraits();
     mutationInfo.setCalculatedDifference(calculateDifference());
@@ -152,6 +153,7 @@ class Candidate {
   void saveToFile(String fileName, boolean inHighQuality) {
     BufferedImage fancyRender = new BufferedImage(width, height, targetImage.getImageType());
     Graphics2D g2d = fancyRender.createGraphics();
+    g2d.setClip(0, 0, width, height);
 
     if (inHighQuality) {
       g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -188,13 +190,29 @@ class Candidate {
   String toSvg() {
     StringBuilder sb = new StringBuilder();
     sb
-        .append("<svg ")
-        .append("width=\"").append(width).append("\" ")
-        .append("height=\"").append(height).append("\">\n");
+        .append("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>\n")
+        .append(
+            "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" "
+                + "\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n")
+        .append(
+            "<svg xmlns=\"http://www.w3.org/2000/svg\" "
+                + "xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\" >\n")
+
+        .append("<defs>\n")
+        .append("\t<clipPath id=\"limits\">\n")
+        .append("\t\t<rect x=\"0\" y=\"0\" width=\"")
+        .append(width)
+        .append("\" height=\"")
+        .append(height)
+        .append("\" />\n")
+        .append("\t</clipPath>\n")
+        .append(" </defs>\n")
+        .append("<g clip-path=\"url(#limits)\">\n");
     for (Trait trait : traitsList) {
-      sb.append("  ").append(trait.toSvg()).append("\n");
+      sb.append("\t").append(trait.toSvg()).append("\n");
     }
-    sb.append("</svg>");
+
+    sb.append("</g>\n").append("</svg>");
     return sb.toString();
   }
 
