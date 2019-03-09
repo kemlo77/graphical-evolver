@@ -40,6 +40,7 @@ public class Polygon extends Trait {
     removeLastPointMutation();
   }
 
+
   @Override
   public void draw(Graphics2D g2d) {
     //Seems to be about 7% faster than drawing with: moveTo, lineTo, closePath...
@@ -50,6 +51,7 @@ public class Polygon extends Trait {
     g2d.setPaint(getColor());
     g2d.fillPolygon(p);
   }
+
 
   @Override
   public String toSvg() {

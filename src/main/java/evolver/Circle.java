@@ -8,7 +8,6 @@ class Circle extends Trait {
   private Point midPoint;
   private int diameter;
   private int oldDiameter;
-  //TODO: Annat max-värde för cirkel-diameter
   private final int maxDiameter;
 
   Circle(int width, int height) {
@@ -37,7 +36,6 @@ class Circle extends Trait {
 
   @Override
   void draw(Graphics2D g2d) {
-    //TODO: kolla matten i denna. Kommer i 50% av fallen hamna en halv pixel fel?
     int x = midPoint.x - (diameter / 2);
     int y = midPoint.y - (diameter / 2);
     g2d.setColor(getColor());

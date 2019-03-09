@@ -37,8 +37,8 @@ abstract class Trait {
 
   abstract String toSvg();
 
-  void setWidth(int width) {
-    this.width = width;
+  int getWidth() {
+    return width;
   }
 
   void setDead() {
@@ -47,14 +47,6 @@ abstract class Trait {
 
   boolean isDead() {
     return this.dead;
-  }
-
-  void setHeight(int height) {
-    this.height = height;
-  }
-
-  int getWidth() {
-    return width;
   }
 
   int getHeight() {

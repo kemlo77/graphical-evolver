@@ -6,9 +6,6 @@ class Background extends Trait {
 
   Background(int width, int height) {
     super(width, height);
-    setWidth(width);
-    setHeight(height);
-
   }
 
   @Override
