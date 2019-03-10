@@ -8,6 +8,7 @@ public class GraphicalEvolver {
 
   /**
    * Main method that kick-starts the simulation.
+   *
    * @param args file-name traits mutations rounds file-suffix
    */
   public static void main(String[] args) {
@@ -30,42 +31,40 @@ public class GraphicalEvolver {
 
     try {
       TargetImage.setTargetImage(new File(fileName));
+    } catch (IOException e) {
+      System.out.println("Could not load file specified by user.\nExiting..");
+      System.exit(1);
+    }
 
-      for (int k = 0; k < numberOfRounds; k++) {
+    for (int k = 0; k < numberOfRounds; k++) {
 
-        Candidate candidate = new Candidate(numberOfTraits);
-        for (int i = 0; i < numberOfMutations; i++) {
+      Candidate candidate = new Candidate(numberOfTraits);
+      for (int i = 0; i < numberOfMutations; i++) {
 
-          //printing information every nth step
-          int numberOfSteps = 50;
-          if (i > 0 && 0 == i % Math.floor((float) numberOfMutations / numberOfSteps)) {
-            System.out.println(candidate.getMutationInfo());
-          }
-
-          //replacing dead traits half way
-          if (i == Math.floor((float) numberOfMutations / 2)) {
-            int removedTraits = candidate.removeTraitsThatContributeUnderLimit(0.04f);
-            candidate.addRandomTraits(removedTraits);
-          }
-
-          //evolving in a progressively decreasing manner
-          candidate.evolve(1 - ((float) i / numberOfMutations));
+        //printing information every nth step
+        int numberOfSteps = 50;
+        if (i > 0 && 0 == i % Math.floor((float) numberOfMutations / numberOfSteps)) {
+          System.out.println(candidate.getMutationInfo());
         }
 
-        System.out.println(candidate.getMutationInfo());
-        candidate.saveToFile(
-            "result_"
-                + candidate.getMutationInfo().getFitnessPercentageString() + "_" + (k + 1)
-                + fileSuffix
-                + ".png");
+        //replacing dead traits half way
+        if (i == Math.floor((float) numberOfMutations / 2)) {
+          int removedTraits = candidate.removeTraitsThatContributeUnderLimit(0.04f);
+          candidate.addRandomTraits(removedTraits);
+        }
 
-        //System.out.println(candidate.toSvg());
+        //evolving in a progressively decreasing manner
+        candidate.evolve(1 - ((float) i / numberOfMutations));
       }
 
+      System.out.println(candidate.getMutationInfo());
+      candidate.saveToFile(
+          "result_"
+              + candidate.getMutationInfo().getFitnessPercentageString() + "_" + (k + 1)
+              + fileSuffix
+              + ".png");
 
-    } catch (IOException e) {
-      System.out.println("Could not load file specified by user.");
-      e.printStackTrace();
+      //System.out.println(candidate.toSvg());
     }
 
 
