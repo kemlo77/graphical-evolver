@@ -13,7 +13,7 @@ class Candidate {
 
   Candidate(int numberOfTraits) {
 
-    traitsList.add(new Background());
+    traitsList.add(TraitFactory.getTrait("background"));
     addRandomTraits(numberOfTraits);
     TargetImage.redrawCandidate(traitsList);
 
@@ -62,13 +62,13 @@ class Candidate {
     for (int i = 0; i < numberOfNewTraits; i++) {
       int randomInt = rand.nextInt(3);
       if (randomInt == 0) {
-        traitsList.add(new Polygon(6));
+        traitsList.add(TraitFactory.getTrait("polygon"));
       }
       if (randomInt == 1) {
-        traitsList.add(new Circle());
+        traitsList.add(TraitFactory.getTrait("circle"));
       }
       if (randomInt == 2) {
-        traitsList.add(new Line());
+        traitsList.add(TraitFactory.getTrait("line"));
       }
     }
     System.out.println("Added " + numberOfNewTraits + " new traits.");
