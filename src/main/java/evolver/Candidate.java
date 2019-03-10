@@ -38,9 +38,9 @@ class Candidate {
           (1 - (float) calculatedDifference / TargetImage.getMaximumDifference()) * 100;
 
       System.out.println(""
-          + currentFitness + " - "
-          + newCalculatedFitness + " = "
-          + (currentFitness - newCalculatedFitness));
+          + String.format("%.3f",currentFitness) + " - "
+          + String.format("%.3f",newCalculatedFitness) + " = "
+          + String.format("%.3f",(currentFitness - newCalculatedFitness)));
 
       if ((currentFitness - newCalculatedFitness) < contributionLimit) {
         traitsList.get(i).setDead();
