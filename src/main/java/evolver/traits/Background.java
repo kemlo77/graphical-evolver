@@ -1,24 +1,25 @@
-package evolver;
+package evolver.traits;
 
+import evolver.TargetImage;
 import java.awt.Graphics2D;
 
-class Background extends Trait {
+public class Background extends Trait {
 
-  Background() {
+  public Background() {
   }
 
   @Override
-  void mutateShape(float degree) {
-
-  }
-
-  @Override
-  void removeLastShapeMutation() {
+  public void mutateShape(float degree) {
 
   }
 
   @Override
-  void draw(Graphics2D g2d) {
+  public void removeLastShapeMutation() {
+
+  }
+
+  @Override
+  public void draw(Graphics2D g2d) {
     g2d.setPaint(getColor());
     g2d.fillRect(0, 0, TargetImage.getImageWidth(), TargetImage.getImageHeight());
   }

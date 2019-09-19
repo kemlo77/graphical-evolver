@@ -1,5 +1,6 @@
 package evolver;
 
+import evolver.traits.Trait;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -9,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 import javax.imageio.ImageIO;
 
-class TargetImage {
+public class TargetImage {
 
   private static int originalImageWidth;
   private static int originalImageHeight;
@@ -20,11 +21,11 @@ class TargetImage {
   private static Graphics2D candidateGraphics2d;
 
 
-  static int getImageWidth() {
+  public static int getImageWidth() {
     return originalImageWidth;
   }
 
-  static int getImageHeight() {
+  public static int getImageHeight() {
     return originalImageHeight;
   }
 

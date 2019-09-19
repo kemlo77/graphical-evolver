@@ -1,4 +1,4 @@
-package evolver;
+package evolver.traits;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -17,7 +17,7 @@ public class Polygon extends Trait {
   private List<Point> pointList;
 
 
-  Polygon(int numberOfVertices) {
+  public Polygon(int numberOfVertices) {
     pointList = new ArrayList<>();
     for (int i = 0; i < numberOfVertices; i++) {
       pointList.add(generateRandomPoint());

@@ -42,16 +42,16 @@ public class GraphicalEvolver {
       for (int i = 0; i < numberOfMutations; i++) {
 
         //printing information every nth step
-        int numberOfSteps = 50;
-        if (i > 0 && 0 == i % Math.floor((float) numberOfMutations / numberOfSteps)) {
-          System.out.println(candidate.getMutationInfo());
-        }
+//        int numberOfSteps = 50;
+//        if (i > 0 && 0 == i % Math.floor((float) numberOfMutations / numberOfSteps)) {
+//          System.out.println(candidate.getMutationInfo());
+//        }
 
         //replacing dead traits half way
-        if (i == Math.floor((float) numberOfMutations / 2)) {
-          int removedTraits = candidate.removeTraitsThatContributeUnderLimit(0.04f);
-          candidate.addRandomTraits(removedTraits);
-        }
+//        if (i == Math.floor((float) numberOfMutations / 2)) {
+//          int removedTraits = candidate.removeTraitsThatContributeUnderLimit(0.04f);
+//          candidate.addRandomTraits(removedTraits);
+//        }
 
         //evolving in a progressively decreasing manner
         candidate.evolve(1 - ((float) i / numberOfMutations));

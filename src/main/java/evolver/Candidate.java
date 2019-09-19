@@ -1,5 +1,7 @@
 package evolver;
 
+import evolver.traits.Trait;
+import evolver.traits.TraitFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

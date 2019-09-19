@@ -1,8 +1,14 @@
-package evolver;
+package evolver.traits;
 
-class TraitFactory {
+import evolver.traits.Background;
+import evolver.traits.Circle;
+import evolver.traits.Line;
+import evolver.traits.Polygon;
+import evolver.traits.Trait;
 
-  static Trait getTrait(String trait) {
+public class TraitFactory {
+
+  public static Trait getTrait(String trait) {
 
     if ("circle".equalsIgnoreCase(trait)) {
       return new Circle();

@@ -1,5 +1,7 @@
-package evolver;
+package evolver.traits;
 
+import evolver.TargetImage;
+import evolver.Utils;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -7,7 +9,7 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-abstract class Trait {
+public abstract class Trait {
 
   private Color color;
   private Color oldColor;
@@ -24,19 +26,19 @@ abstract class Trait {
     this.color = new Color(r, g, b, 10);
   }
 
-  abstract void mutateShape(float degree);
+  public abstract void mutateShape(float degree);
 
-  abstract void removeLastShapeMutation();
+  public abstract void removeLastShapeMutation();
 
-  abstract void draw(Graphics2D graphics);
+  public abstract void draw(Graphics2D graphics);
 
-  abstract String toSvg();
+  public abstract String toSvg();
 
-  void setDead() {
+  public void setDead() {
     this.dead = true;
   }
 
-  boolean isDead() {
+  public boolean isDead() {
     return this.dead;
   }
 
@@ -44,7 +46,7 @@ abstract class Trait {
     return this.color;
   }
 
-  void mutateColor(float degree) {
+  public void mutateColor(float degree) {
     oldColor = color;
 
     Random rand = new Random();
@@ -82,7 +84,7 @@ abstract class Trait {
   }
 
 
-  void removeLastColorMutation() {
+  public void removeLastColorMutation() {
     if (oldColor != null) {
       color = oldColor;
       oldColor = null;

@@ -2,7 +2,7 @@ package evolver;
 
 import java.util.Random;
 
-class Utils {
+public class Utils {
 
   /**
    * Returns a random int within the given interval (minIncl - maxIncl) A spread ratio close to 1.0
@@ -16,7 +16,7 @@ class Utils {
    * @param spreadRatio The spread ratio (between 0.01 and 1.0).
    * @return a new random number
    */
-  static int mutateInInterval(int minIncl, int maxIncl, int currentVal, float spreadRatio) {
+  public static int mutateInInterval(int minIncl, int maxIncl, int currentVal, float spreadRatio) {
     //TODO: tester vid brett intervall, smalt intervall,
     // när current är nära minIncl eller maxIncl eller i mitten av intervallet
     //TODO:  tester vid ett smalt intervall
@@ -70,7 +70,7 @@ class Utils {
    * @param maxInclusive maximum value
    * @return a random int int the given interval
    */
-  static int mutateInWholeInterval(int minInclusive, int maxInclusive) {
+  public static int mutateInWholeInterval(int minInclusive, int maxInclusive) {
     if (minInclusive < 0 || maxInclusive < 0) {
       throw new IllegalArgumentException("Parameters must be a positive number or zero.");
     }

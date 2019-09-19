@@ -1,16 +1,18 @@
-package evolver;
+package evolver.traits;
 
+import evolver.TargetImage;
+import evolver.Utils;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
-class Circle extends Trait {
+public class Circle extends Trait {
 
   private Point midPoint;
   private int diameter;
   private int oldDiameter;
   private final int maxDiameter;
 
-  Circle() {
+  public Circle() {
     //TODO:Inventera vilka filer som refererar till TargetImage.getImageHeight eller width
     this.maxDiameter = TargetImage.getImageHeight() / 2;
     this.midPoint = generateRandomPoint();
@@ -20,7 +22,7 @@ class Circle extends Trait {
   }
 
   @Override
-  void mutateShape(float degree) {
+  public void mutateShape(float degree) {
     mutatePoint(midPoint, degree);
 
     oldDiameter = diameter;
@@ -28,13 +30,13 @@ class Circle extends Trait {
   }
 
   @Override
-  void removeLastShapeMutation() {
+  public void removeLastShapeMutation() {
     removeLastPointMutation();
     diameter = oldDiameter;
   }
 
   @Override
-  void draw(Graphics2D g2d) {
+  public void draw(Graphics2D g2d) {
     int x = midPoint.x - (diameter / 2);
     int y = midPoint.y - (diameter / 2);
     g2d.setColor(getColor());
