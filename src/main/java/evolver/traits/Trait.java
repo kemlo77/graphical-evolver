@@ -46,6 +46,15 @@ public abstract class Trait {
     return this.color;
   }
 
+  void setColor(Color color) {
+    this.color = color;
+  }
+
+  /**
+   * A method that will mutate the color.
+   *
+   * @param degree The degree of mutation.
+   */
   public void mutateColor(float degree) {
     oldColor = color;
 
@@ -83,7 +92,9 @@ public abstract class Trait {
     color = new Color(newR, newG, newB, newAlpha);
   }
 
-
+  /**
+   * Removes the mutation of the color.
+   */
   public void removeLastColorMutation() {
     if (oldColor != null) {
       color = oldColor;

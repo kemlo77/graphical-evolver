@@ -5,7 +5,11 @@ import java.awt.Graphics2D;
 
 public class Background extends Trait {
 
-  public Background() {
+  Background() {
+  }
+
+  public Background(Background background) {
+    this.setColor(background.getColor());
   }
 
   @Override

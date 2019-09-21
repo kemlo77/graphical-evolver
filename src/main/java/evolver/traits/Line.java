@@ -15,13 +15,29 @@ public class Line extends Trait {
   private final int maxLineWidth = 7;
 
 
-  public Line() {
+  /**
+   * A regular constructor that will generate a random Line object.
+   */
+  Line() {
     this.p1 = generateRandomPoint();
     this.p2 = generateRandomPoint();
 
     this.lineWidth = Utils.mutateInWholeInterval(1, maxLineWidth);
     this.oldLineWidth = this.lineWidth;
 
+  }
+
+  /**
+   * A Copy Constructor for the Line class. It delivers a deep copy.
+   *
+   * @param line The line object used when creating a new one.
+   */
+  public Line(Line line) {
+    this.p1 = new Point(line.p1);
+    this.p2 = new Point(line.p2);
+    this.lineWidth = line.lineWidth;
+    this.oldLineWidth = line.oldLineWidth;
+    this.setColor(line.getColor());
   }
 
   @Override

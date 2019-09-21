@@ -1,5 +1,9 @@
 package evolver;
 
+import evolver.traits.Background;
+import evolver.traits.Circle;
+import evolver.traits.Line;
+import evolver.traits.Polygon;
 import evolver.traits.Trait;
 import evolver.traits.TraitFactory;
 import java.util.ArrayList;
@@ -15,12 +19,33 @@ class Candidate {
 
   Candidate(int numberOfTraits) {
 
-    traitsList.add(TraitFactory.getTrait("background"));
+    this.traitsList.add(TraitFactory.getTrait("background"));
     addRandomTraits(numberOfTraits);
     TargetImage.redrawCandidate(traitsList);
 
-    mutationInfo = new MutationInfo();
-    mutationInfo.setCalculatedDifference(TargetImage.calculateDifference());
+    this.mutationInfo = new MutationInfo();
+    this.mutationInfo.setCalculatedDifference(TargetImage.calculateDifference());
+  }
+
+  Candidate(Candidate candidate) {
+    for (int i = 0; i < candidate.traitsList.size(); i++) {
+      Trait currentTrait = candidate.traitsList.get(i);
+      if (currentTrait instanceof Background) {
+        this.traitsList.add(new Background((Background) currentTrait));
+      }
+      if (currentTrait instanceof Circle) {
+        this.traitsList.add(new Circle((Circle) currentTrait));
+      }
+      if (currentTrait instanceof Line) {
+        this.traitsList.add(new Line((Line) currentTrait));
+      }
+      if (currentTrait instanceof Polygon) {
+        this.traitsList.add(new Polygon((Polygon) currentTrait));
+      }
+    }
+
+    this.mutationInfo = new MutationInfo(candidate.mutationInfo);
+
   }
 
 
@@ -40,9 +65,9 @@ class Candidate {
           (1 - (float) calculatedDifference / TargetImage.getMaximumDifference()) * 100;
 
       System.out.println(""
-          + String.format("%.3f",currentFitness) + " - "
-          + String.format("%.3f",newCalculatedFitness) + " = "
-          + String.format("%.3f",(currentFitness - newCalculatedFitness)));
+          + String.format("%.3f", currentFitness) + " - "
+          + String.format("%.3f", newCalculatedFitness) + " = "
+          + String.format("%.3f", (currentFitness - newCalculatedFitness)));
 
       if ((currentFitness - newCalculatedFitness) < contributionLimit) {
         traitsList.get(i).setDead();

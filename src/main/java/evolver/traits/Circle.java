@@ -12,13 +12,29 @@ public class Circle extends Trait {
   private int oldDiameter;
   private final int maxDiameter;
 
-  public Circle() {
+  /**
+   * A regular constructor that will generate a random Circle object.
+   */
+  Circle() {
     //TODO:Inventera vilka filer som refererar till TargetImage.getImageHeight eller width
     this.maxDiameter = TargetImage.getImageHeight() / 2;
     this.midPoint = generateRandomPoint();
     this.diameter = Utils.mutateInWholeInterval(1, maxDiameter);
     this.oldDiameter = this.diameter;
 
+  }
+
+  /**
+   * A Copy Constructor for the Circle class. It delivers a deep copy.
+   *
+   * @param circle The Circle object used when creating the new one.
+   */
+  public Circle(Circle circle) {
+    this.maxDiameter = circle.maxDiameter;
+    this.midPoint = new Point(circle.midPoint);
+    this.diameter = circle.diameter;
+    this.oldDiameter = circle.oldDiameter;
+    this.setColor(circle.getColor());
   }
 
   @Override
@@ -54,4 +70,5 @@ public class Circle extends Trait {
             + super.svgColorInfo()
             + "/>";
   }
+
 }

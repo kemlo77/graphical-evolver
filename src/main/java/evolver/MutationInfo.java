@@ -23,6 +23,12 @@ class MutationInfo {
     this.calculatedDifference = TargetImage.getMaximumDifference();
   }
 
+  MutationInfo(MutationInfo mutationInfo) {
+    this.successfulMutations = mutationInfo.successfulMutations;
+    this.totNumberOfMutations = mutationInfo.totNumberOfMutations;
+    this.calculatedDifference = mutationInfo.calculatedDifference;
+  }
+
   void startTime() {
     startTime = LocalTime.now();
   }

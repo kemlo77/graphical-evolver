@@ -17,11 +17,29 @@ public class Polygon extends Trait {
   private List<Point> pointList;
 
 
-  public Polygon(int numberOfVertices) {
+  /**
+   * A regular constructor that will generate a random polygon object.
+   *
+   * @param numberOfVertices The number of vertices the new polygon object will have.
+   */
+  Polygon(int numberOfVertices) {
     pointList = new ArrayList<>();
     for (int i = 0; i < numberOfVertices; i++) {
       pointList.add(generateRandomPoint());
     }
+  }
+
+  /**
+   * A Copy Constructor for the Polygon class. It delivers a deep copy.
+   *
+   * @param polygon The Polygon object used when creating a new one.
+   */
+  public Polygon(Polygon polygon) {
+    this.pointList = new ArrayList<>();
+    for (int i = 0; i < polygon.pointList.size(); i++) {
+      pointList.add(new Point(polygon.pointList.get(i)));
+    }
+    this.setColor(polygon.getColor());
   }
 
 
