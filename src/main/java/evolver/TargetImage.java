@@ -46,7 +46,7 @@ public class TargetImage {
   }
 
   static long calculateDifference() {
-    return Differ.imageDifference(originalBufferedImage, candidateBufferedImage);
+    return Differ.totalImageColorDifference(originalBufferedImage, candidateBufferedImage);
   }
 
   static void redrawCandidate(List<Trait> traitsList, int skipTraitNr) {

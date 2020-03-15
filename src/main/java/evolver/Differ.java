@@ -8,33 +8,72 @@ import javax.imageio.ImageIO;
 
 class Differ {
 
+  public static void main(String[] args) throws IOException {
 
-  static void skapaDiffBild(BufferedImage image1, BufferedImage image2, String pathToNewFile)
+    BufferedImage in1 = ImageIO.read(new File("mona_small.png"));
+    BufferedImage in2 = ImageIO.read(new File("result_95.96_1f.png"));
+    createDeltaImage(in1, in2, "diff.png");
+  }
+
+
+
+
+  static long totalImageColorDifference(BufferedImage image1, BufferedImage image2) {
+    //inspiration från https://stackoverflow.com/questions/37598977/how-to-compare-two-images-using-selenium
+    //se denna https://stackoverflow.com/questions/6524196/java-get-pixel-array-from-image
+    //TODO: testa att det fungerar med bild utan alpha-channel
+    //TODO: hantera om ena bilden har alpha-channel, men inte den andra?
+    //TODO: hantera om bilderna är olika stora
+    long maximumImageDifference = Long.MAX_VALUE;
+    if (image1.getWidth() != image2.getWidth() || image1.getHeight() != image2.getHeight()) {
+      return maximumImageDifference;
+    }
+
+    boolean hasAlphaChannel = imageHasAlphaChannel(image1);
+    final byte[] pixelsRgb1 = getPixelsRgb(image1);
+    final byte[] pixelsRgb2 = getPixelsRgb(image2);
+
+    long totDiff = 0L;
+
+    for (int pixelChannel = 0; pixelChannel < pixelsRgb1.length; pixelChannel++) {
+      if (hasAlphaChannel) {
+        if (pixelChannel % 4 == 0) {
+          continue;
+        }
+      }
+      totDiff += colorChannelDifference(pixelsRgb1[pixelChannel], pixelsRgb2[pixelChannel]);
+    }
+
+    return totDiff;
+  }
+
+  private static boolean imageHasAlphaChannel(BufferedImage image1) {
+    return image1.getAlphaRaster() != null;
+  }
+
+  private static byte[] getPixelsRgb(BufferedImage image1) {
+    return ((DataBufferByte) image1.getRaster().getDataBuffer()).getData();
+  }
+
+  private static int colorChannelDifference(byte value1, byte value2) {
+    return Math.abs((value1 & 0xff) - (value2 & 0xff));
+  }
+
+  static void createDeltaImage(BufferedImage image1, BufferedImage image2, String pathToNewFile)
       throws IOException {
     BufferedImage newImage = new BufferedImage(image1.getWidth(), image1.getHeight(),
         image1.getType());
     //inspiration från https://stackoverflow.com/questions/37598977/how-to-compare-two-images-using-selenium
     //TODO: skriva om så att den använder en effektivare java-kod
     //TODO: hantera om bilderna är olika stora
+    //TODO: pathToNewFile borde kanske vara en Path eller File
     //se denna https://stackoverflow.com/questions/6524196/java-get-pixel-array-from-image
-    for (int x = 0; x < image1.getWidth(); x++) {
-      for (int y = 0; y < image1.getHeight(); y++) {
-        int argb1 = image1.getRGB(x, y);
-        int argb2 = image2.getRGB(x, y);
-        int r0 = (argb1 >> 16) & 0xFF;
-        int g0 = (argb1 >> 8) & 0xFF;
-        int b0 = (argb1) & 0xFF;
-        int r1 = (argb2 >> 16) & 0xFF;
-        int g1 = (argb2 >> 8) & 0xFF;
-        int b1 = (argb2) & 0xFF;
-        int redDiff = Math.abs(r1 - r0);
-        int greenDiff = Math.abs(g1 - g0);
-        int blueDiff = Math.abs(b1 - b0);
-
-        int imageDiff =
-            (255 << 24) | ((~redDiff & 0xff) << 16) | ((~greenDiff & 0xff) << 8) | (~blueDiff
-                & 0xff);
-        newImage.setRGB(x, y, imageDiff);
+    for (int column = 0; column < image1.getWidth(); column++) {
+      for (int row = 0; row < image1.getHeight(); row++) {
+        int colorValue1 = image1.getRGB(column, row);
+        int colorValue2 = image2.getRGB(column, row);
+        int imageDiff = getColorDifference(colorValue1, colorValue2);
+        newImage.setRGB(column, row, imageDiff);
       }
     }
 
@@ -42,41 +81,35 @@ class Differ {
     ImageIO.write(newImage, "png", new File(pathToNewFile));
   }
 
-
-  static long imageDifference(BufferedImage image1, BufferedImage image2) {
-    //inspiration från https://stackoverflow.com/questions/37598977/how-to-compare-two-images-using-selenium
-    //se denna https://stackoverflow.com/questions/6524196/java-get-pixel-array-from-image
-    //TODO: testa att det fungerar med bild utan alpha-channel
-    //TODO: hantera om ena bilden har alpha-channel, men inte den andra?
-    //TODO: hantera om bilderna är olika stora
-    long bildSkillnad = Long.MAX_VALUE;
-    long totDiff = 0L;
-
-    final byte[] pixels1 = ((DataBufferByte) image1.getRaster().getDataBuffer()).getData();
-    final int width1 = image1.getWidth();
-    final int height1 = image1.getHeight();
-    final boolean hasAlphaChannel1 = image1.getAlphaRaster() != null;
-
-    final byte[] pixels2 = ((DataBufferByte) image2.getRaster().getDataBuffer()).getData();
-    final int width2 = image2.getWidth();
-    final int height2 = image2.getHeight();
-    final boolean hasAlphaChannel2 = image2.getAlphaRaster() != null;
-
-    if (width1 != width2 || height1 != height2) {
-      return bildSkillnad;
-    }
-
-    int pixelLength = hasAlphaChannel1 ? 4 : 3;
-    int startPixel = hasAlphaChannel1 ? 1 : 0;
-
-    for (int pixel = startPixel; pixel < pixels1.length; pixel += pixelLength) {
-      totDiff += Math.abs((pixels1[pixel] & 0xff) - (pixels2[pixel] & 0xff));
-      totDiff += Math.abs((pixels1[pixel + 1] & 0xff) - (pixels2[pixel + 1] & 0xff));
-      totDiff += Math.abs((pixels1[pixel + 2] & 0xff) - (pixels2[pixel + 2] & 0xff));
-    }
-
-    return totDiff;
+  private static int getColorDifference(int colorInt1, int colorInt2) {
+    int redDiff = colorChannelDifference(getRedByte(colorInt1), getRedByte(colorInt2));
+    int greenDiff = colorChannelDifference(getGreenByte(colorInt1), getGreenByte(colorInt2));
+    int blueDiff = colorChannelDifference(getBlueByte(colorInt1), getBlueByte(colorInt2));
+    return getColorInt(redDiff, greenDiff, blueDiff);
   }
+
+  private static int getColorInt(int redDiff, int greenDiff, int blueDiff) {
+    return (255 << 24) | ~((redDiff << 16) | (greenDiff << 8) | blueDiff);
+  }
+
+  private static byte getRedByte(int colorInt) {
+    return (byte) ((colorInt >> 16) & 0xFF);
+  }
+
+  private static byte getGreenByte(int colorInt) {
+    return (byte) ((colorInt >> 8) & 0xFF);
+  }
+
+  private static byte getBlueByte(int colorInt) {
+    return (byte) (colorInt & 0xFF);
+  }
+
+
+
+
+
+
+
 
 
 }
