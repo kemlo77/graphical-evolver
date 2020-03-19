@@ -77,18 +77,45 @@ class Differ {
       }
     }
 
-    System.out.println("Sparar diffad bild till: " + pathToNewFile);
     ImageIO.write(newImage, "png", new File(pathToNewFile));
+  }
+
+  static void createDeltaImage2(BufferedImage image1, BufferedImage image2, String pathToNewFile)
+      throws IOException {
+    int width = image1.getWidth();
+    int height = image1.getHeight();
+    BufferedImage newImage = new BufferedImage(width, height, image1.getType());
+
+    for (int column = 0; column < width; column++) {
+      for (int row = 0; row < height; row++) {
+        int colorValue1 = image1.getRGB(column, row);
+        int colorValue2 = image2.getRGB(column, row);
+        int imageDiff = getColorDifference(colorValue1, colorValue2);
+        newImage.setRGB(column, row, imageDiff);
+      }
+    }
+
+    ImageIO.write(newImage, "png", new File(pathToNewFile));
+  }
+
+  private static int getAbsoluteColorDifference(int colorInt1, int colorInt2) {
+    int redDiff = colorChannelDifference(getRedByte(colorInt1), getRedByte(colorInt2));
+    int greenDiff = colorChannelDifference(getGreenByte(colorInt1), getGreenByte(colorInt2));
+    int blueDiff = colorChannelDifference(getBlueByte(colorInt1), getBlueByte(colorInt2));
+    int absoluteDiff = (int) Math
+        .floor(Math.sqrt(Math.pow(redDiff, 2) + Math.pow(greenDiff, 2) + Math.pow(blueDiff, 2)));
+    return rgbBytesToColorInt(redDiff, greenDiff, blueDiff);
   }
 
   private static int getColorDifference(int colorInt1, int colorInt2) {
     int redDiff = colorChannelDifference(getRedByte(colorInt1), getRedByte(colorInt2));
     int greenDiff = colorChannelDifference(getGreenByte(colorInt1), getGreenByte(colorInt2));
     int blueDiff = colorChannelDifference(getBlueByte(colorInt1), getBlueByte(colorInt2));
-    return getColorInt(redDiff, greenDiff, blueDiff);
+    return rgbBytesToColorInt(redDiff, greenDiff, blueDiff);
   }
 
-  private static int getColorInt(int redDiff, int greenDiff, int blueDiff) {
+  private static int rgbBytesToColorInt(int redDiff, int greenDiff, int blueDiff) {
+    //TODO: ska det verkligen inverteras??
     return (255 << 24) | ~((redDiff << 16) | (greenDiff << 8) | blueDiff);
   }
 

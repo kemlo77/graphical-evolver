@@ -17,15 +17,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 class DifferTest {
 
-
-  @ParameterizedTest(name = "{index} - ''{4}''")
-  @MethodSource("coloredImages")
-  @DisplayName("Verify calculation using different colored images")
-  void totalImageColorDifferenceTest(BufferedImage b1, BufferedImage b2, BufferedImage diff,
-      long expectedDiff, String description) {
-    assertEquals(expectedDiff, Differ.totalImageColorDifference(b1, b2));
-  }
-
   private static Stream<Arguments> coloredImages() {
     //BufferedImage red = TestUtils.createBufferedImage(255,0,0);
     BufferedImage red = TestUtils.createBufferedImage(Color.red);
@@ -51,29 +42,26 @@ class DifferTest {
   @TempDir
   Path tempDir;
 
+
+  @ParameterizedTest(name = "{index} - ''{4}''")
+  @MethodSource("coloredImages")
+  @DisplayName("Verify calculation using different colored images")
+  void totalImageColorDifferenceTest(BufferedImage b1, BufferedImage b2, BufferedImage diff,
+      long expectedDiff, String description) {
+    assertEquals(expectedDiff, Differ.totalImageColorDifference(b1, b2));
+  }
+
+
   @ParameterizedTest(name = "{index} - ''{4}''")
   @MethodSource("coloredImages")
   @DisplayName("Verify delta image creation using different colored images")
   void createDeltaImageTest(BufferedImage bufferedImage1, BufferedImage bufferedImage2,
-      BufferedImage expectedImage, int a,
-      String message) throws IOException {
+      BufferedImage expectedImage, int a, String message) throws IOException {
 
     Path outputPng = Files.createFile(tempDir.resolve("image.png"));
     Differ.createDeltaImage(bufferedImage1, bufferedImage2, outputPng.toString());
 
     BufferedImage outputBufferedImage = ImageIO.read(outputPng.toFile());
-
-    int argb1 = outputBufferedImage.getRGB(1, 1);
-    int r1 = (argb1 >> 16) & 0xFF;
-    int g1 = (argb1 >> 8) & 0xFF;
-    int b1 = (argb1) & 0xFF;
-    System.out.println(r1 + "," + g1 + "," + b1);
-
-    int argb2 = expectedImage.getRGB(1, 1);
-    int r2 = (argb1 >> 16) & 0xFF;
-    int g2 = (argb1 >> 8) & 0xFF;
-    int b2 = (argb1) & 0xFF;
-    System.out.println(r2 + "," + g2 + "," + b2);
 
     assertEquals(expectedImage.getRGB(1, 1), outputBufferedImage.getRGB(1, 1));
 

@@ -12,9 +12,9 @@ import javax.imageio.ImageIO;
 
 public class TargetImage {
 
-  private static int originalImageWidth;
-  private static int originalImageHeight;
-  private static int originalImageType;
+  private static int width;
+  private static int height;
+  private static int type;
   private static BufferedImage originalBufferedImage;
   private static long maximumDifference;
   private static BufferedImage candidateBufferedImage;
@@ -22,15 +22,15 @@ public class TargetImage {
 
 
   public static int getImageWidth() {
-    return originalImageWidth;
+    return width;
   }
 
   public static int getImageHeight() {
-    return originalImageHeight;
+    return height;
   }
 
   static int getImageType() {
-    return originalImageType;
+    return type;
   }
 
   static BufferedImage getOriginalBufferedImage() {
@@ -51,7 +51,7 @@ public class TargetImage {
 
   static void redrawCandidate(List<Trait> traitsList, int skipTraitNr) {
     candidateGraphics2d.setBackground(Color.WHITE);
-    candidateGraphics2d.clearRect(0, 0, originalImageWidth, originalImageHeight);
+    candidateGraphics2d.clearRect(0, 0, width, height);
     for (int i = 0; i < traitsList.size(); i++) {
       if (i == skipTraitNr) {
         continue;
@@ -68,10 +68,10 @@ public class TargetImage {
 
   static void saveToFile(List<Trait> traitsList, String fileName) {
 
-    BufferedImage fancyRender = new BufferedImage(originalImageWidth, originalImageHeight,
-        originalImageType);
+    BufferedImage fancyRender = new BufferedImage(width, height,
+        type);
     Graphics2D g2d = fancyRender.createGraphics();
-    g2d.setClip(0, 0, originalImageWidth, originalImageHeight);
+    g2d.setClip(0, 0, width, height);
 
     g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
         RenderingHints.VALUE_ANTIALIAS_ON);
@@ -87,7 +87,7 @@ public class TargetImage {
         RenderingHints.VALUE_RENDER_QUALITY);
 
     g2d.setBackground(Color.WHITE);
-    g2d.clearRect(0, 0, originalImageWidth, originalImageHeight);
+    g2d.clearRect(0, 0, width, height);
     for (Trait trait : traitsList) {
       trait.draw(g2d);
     }
@@ -105,16 +105,18 @@ public class TargetImage {
 
   static void setTargetImage(File file) throws IOException {
     originalBufferedImage = ImageIO.read(file);
-    originalImageWidth = originalBufferedImage.getWidth();
-    originalImageHeight = originalBufferedImage.getHeight();
 
-    originalImageType = originalBufferedImage.getType();
-    maximumDifference = originalImageWidth * originalImageHeight * 3 * 255;
+    width = originalBufferedImage.getWidth();
+    height = originalBufferedImage.getHeight();
+    type = originalBufferedImage.getType();
 
-    candidateBufferedImage = new BufferedImage(originalImageWidth, originalImageHeight,
-        originalImageType);
+    maximumDifference = width * height * 3 * 255;
+    //TODO: skapa en ny "original buffered image" som garanterat har alpha channel
+    //TODO: candidateBufferedImage ska ha alpha channel, dvs välj typ
+    candidateBufferedImage = new BufferedImage(width, height, type);
+
     candidateGraphics2d = candidateBufferedImage.createGraphics();
-    candidateGraphics2d.setClip(0, 0, originalImageWidth, originalImageHeight);
+    candidateGraphics2d.setClip(0, 0, width, height);
 
   }
 }
