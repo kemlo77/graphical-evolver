@@ -15,7 +15,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-class DifferTest {
+class DifferUtilTest {
 
   private static Stream<Arguments> coloredImages() {
     //BufferedImage red = TestUtils.createBufferedImage(255,0,0);
@@ -48,7 +48,7 @@ class DifferTest {
   @DisplayName("Verify calculation using different colored images")
   void totalImageColorDifferenceTest(BufferedImage b1, BufferedImage b2, BufferedImage diff,
       long expectedDiff, String description) {
-    assertEquals(expectedDiff, Differ.totalImageColorDifference(b1, b2));
+    assertEquals(expectedDiff, DifferUtil.totalImageColorDifference(b1, b2));
   }
 
 
@@ -59,7 +59,7 @@ class DifferTest {
       BufferedImage expectedImage, int a, String message) throws IOException {
 
     Path outputPng = Files.createFile(tempDir.resolve("image.png"));
-    Differ.saveDeltaImage(bufferedImage1, bufferedImage2, outputPng.toString());
+    DifferUtil.saveDeltaImage(bufferedImage1, bufferedImage2, outputPng.toString());
 
     BufferedImage outputBufferedImage = ImageIO.read(outputPng.toFile());
 

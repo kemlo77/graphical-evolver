@@ -6,43 +6,47 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-class Differ {
+class DifferUtil {
 
   public static void main(String[] args) throws IOException {
-    BufferedImage in1 = ImageIO.read(new File("160px-Mona_Lisa.PNG"));
+    BufferedImage in1 = ImageIO.read(new File("160px-Mona_Lisa.png"));
     BufferedImage in2 = ImageIO.read(new File("result_96.37_1a.png"));
-    createDeltaImage2(in1, in2, "diff4.png");
+    saveDeltaImage2(in1, in2, "diff5.png");
+  }
+
+  static BufferedImage cloneToSpecificImageType(BufferedImage image, int imageType) {
+    int width = image.getWidth();
+    int height = image.getHeight();
+    BufferedImage newImage = new BufferedImage(width, height, imageType);
+
+    for (int column = 0; column < width; column++) {
+      for (int row = 0; row < height; row++) {
+        int color = image.getRGB(column, row);
+        newImage.setRGB(column, row, color | (0xff << 24));
+
+
+      }
+    }
+    return newImage;
   }
 
   static long totalImageColorDifference(BufferedImage image1, BufferedImage image2) {
-    //TODO: testa att det fungerar med bild utan alpha-channel
-    //TODO: hantera om ena bilden har alpha-channel, men inte den andra?
     checkImageSizesMatch(image1, image2);
-    long maximumImageDifference = Long.MAX_VALUE;
-    if (image1.getWidth() != image2.getWidth() || image1.getHeight() != image2.getHeight()) {
-      return maximumImageDifference;
-    }
-
-    boolean hasAlphaChannel = imageHasAlphaChannel(image1);
     final byte[] pixelsRgb1 = getPixelsRgb(image1);
     final byte[] pixelsRgb2 = getPixelsRgb(image2);
-
     long totDiff = 0L;
-
-    for (int pixelChannel = 0; pixelChannel < pixelsRgb1.length; pixelChannel++) {
-      if (hasAlphaChannel) {
-        if (pixelChannel % 4 == 0) {
-          continue;
-        }
-      }
-      totDiff += colorChannelDifference(pixelsRgb1[pixelChannel], pixelsRgb2[pixelChannel]);
+    for (int pixel = 0; pixel < pixelsRgb1.length; pixel += 4) {
+      totDiff += colorChannelDifference(pixelsRgb1[pixel + 1], pixelsRgb2[pixel + 1]); //blue
+      totDiff += colorChannelDifference(pixelsRgb1[pixel + 2], pixelsRgb2[pixel + 2]); //green
+      totDiff += colorChannelDifference(pixelsRgb1[pixel + 3], pixelsRgb2[pixel + 3]); //red
     }
-
     return totDiff;
   }
 
-  private static boolean imageHasAlphaChannel(BufferedImage image) {
-    return image.getAlphaRaster() != null;
+  private static void checkImageSizesMatch(BufferedImage image1, BufferedImage image2) {
+    if ((image1.getWidth() != image2.getWidth()) || image1.getHeight() != image2.getHeight()) {
+      throw new IllegalArgumentException("Images have different size.");
+    }
   }
 
   private static byte[] getPixelsRgb(BufferedImage image) {
@@ -53,19 +57,11 @@ class Differ {
     return Math.abs((value1 & 0xff) - (value2 & 0xff));
   }
 
-
   static void saveDeltaImage(BufferedImage image1, BufferedImage image2, String pathToNewFile)
       throws IOException {
-    //TODO: pathToNewFile borde kanske vara en Path eller File
     checkImageSizesMatch(image1, image2);
     BufferedImage delta = createDeltaImage(image1, image2);
     ImageIO.write(delta, "png", new File(pathToNewFile));
-  }
-
-  private static void checkImageSizesMatch(BufferedImage image1, BufferedImage image2) {
-    if ((image1.getWidth() != image2.getWidth()) || image1.getHeight() != image2.getHeight()) {
-      throw new IllegalArgumentException("Images have different size.");
-    }
   }
 
   private static BufferedImage createDeltaImage(BufferedImage image1, BufferedImage image2) {
@@ -82,14 +78,19 @@ class Differ {
     return newImage;
   }
 
-
   private static BufferedImage getCleanImage(BufferedImage image1) {
     return new BufferedImage(image1.getWidth(), image1.getHeight(), image1.getType());
+    //return new BufferedImage(image1.getWidth(), image1.getHeight(), 5);
   }
 
-  static void createDeltaImage2(BufferedImage image1, BufferedImage image2, String pathToNewFile)
+  static void saveDeltaImage2(BufferedImage image1, BufferedImage image2, String pathToNewFile)
       throws IOException {
     checkImageSizesMatch(image1, image2);
+    BufferedImage newImage = createDeltaImage2(image1, image2);
+    ImageIO.write(newImage, "png", new File(pathToNewFile));
+  }
+
+  private static BufferedImage createDeltaImage2(BufferedImage image1, BufferedImage image2) {
     BufferedImage newImage = getCleanImage(image1);
     int maxDiff = 1;
     for (int column = 0; column < image1.getWidth(); column++) {
@@ -114,7 +115,7 @@ class Differ {
         newImage.setRGB(column, row, newColorAndAlpha);
       }
     }
-    ImageIO.write(newImage, "png", new File(pathToNewFile));
+    return newImage;
   }
 
   private static int rgbBytesToColorInt(int red, int green, int blue, int alpha) {

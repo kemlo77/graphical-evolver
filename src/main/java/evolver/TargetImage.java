@@ -14,7 +14,6 @@ public class TargetImage {
 
   private static int width;
   private static int height;
-  private static int type;
   private static BufferedImage originalBufferedImage;
   private static long maximumDifference;
   private static BufferedImage candidateBufferedImage;
@@ -27,10 +26,6 @@ public class TargetImage {
 
   public static int getImageHeight() {
     return height;
-  }
-
-  static int getImageType() {
-    return type;
   }
 
   static BufferedImage getOriginalBufferedImage() {
@@ -46,7 +41,7 @@ public class TargetImage {
   }
 
   static long calculateDifference() {
-    return Differ.totalImageColorDifference(originalBufferedImage, candidateBufferedImage);
+    return DifferUtil.totalImageColorDifference(originalBufferedImage, candidateBufferedImage);
   }
 
   static void redrawCandidate(List<Trait> traitsList, int skipTraitNr) {
@@ -68,8 +63,7 @@ public class TargetImage {
 
   static void saveToFile(List<Trait> traitsList, String fileName) {
 
-    BufferedImage fancyRender = new BufferedImage(width, height,
-        type);
+    BufferedImage fancyRender = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
     Graphics2D g2d = fancyRender.createGraphics();
     g2d.setClip(0, 0, width, height);
 
@@ -104,16 +98,15 @@ public class TargetImage {
 
 
   static void setTargetImage(File file) throws IOException {
-    originalBufferedImage = ImageIO.read(file);
-
-    width = originalBufferedImage.getWidth();
-    height = originalBufferedImage.getHeight();
-    type = originalBufferedImage.getType();
-
+    BufferedImage originalFormat = ImageIO.read(file);
+    width = originalFormat.getWidth();
+    height = originalFormat.getHeight();
     maximumDifference = width * height * 3 * 255;
-    //TODO: skapa en ny "original buffered image" som garanterat har alpha channel
-    //TODO: candidateBufferedImage ska ha alpha channel, dvs välj typ
-    candidateBufferedImage = new BufferedImage(width, height, type);
+
+    originalBufferedImage = DifferUtil
+        .cloneToSpecificImageType(originalFormat, BufferedImage.TYPE_4BYTE_ABGR);
+
+    candidateBufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
 
     candidateGraphics2d = candidateBufferedImage.createGraphics();
     candidateGraphics2d.setClip(0, 0, width, height);
