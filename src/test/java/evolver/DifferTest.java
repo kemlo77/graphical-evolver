@@ -59,7 +59,7 @@ class DifferTest {
       BufferedImage expectedImage, int a, String message) throws IOException {
 
     Path outputPng = Files.createFile(tempDir.resolve("image.png"));
-    Differ.createDeltaImage(bufferedImage1, bufferedImage2, outputPng.toString());
+    Differ.saveDeltaImage(bufferedImage1, bufferedImage2, outputPng.toString());
 
     BufferedImage outputBufferedImage = ImageIO.read(outputPng.toFile());
 

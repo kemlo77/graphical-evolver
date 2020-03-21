@@ -15,12 +15,9 @@ class Differ {
   }
 
   static long totalImageColorDifference(BufferedImage image1, BufferedImage image2) {
-    //inspiration från
-    // https://stackoverflow.com/questions/37598977/how-to-compare-two-images-using-selenium
-    //se denna https://stackoverflow.com/questions/6524196/java-get-pixel-array-from-image
     //TODO: testa att det fungerar med bild utan alpha-channel
     //TODO: hantera om ena bilden har alpha-channel, men inte den andra?
-    //TODO: hantera om bilderna är olika stora
+    checkImageSizesMatch(image1, image2);
     long maximumImageDifference = Long.MAX_VALUE;
     if (image1.getWidth() != image2.getWidth() || image1.getHeight() != image2.getHeight()) {
       return maximumImageDifference;
@@ -44,48 +41,59 @@ class Differ {
     return totDiff;
   }
 
-  private static boolean imageHasAlphaChannel(BufferedImage image1) {
-    return image1.getAlphaRaster() != null;
+  private static boolean imageHasAlphaChannel(BufferedImage image) {
+    return image.getAlphaRaster() != null;
   }
 
-  private static byte[] getPixelsRgb(BufferedImage image1) {
-    return ((DataBufferByte) image1.getRaster().getDataBuffer()).getData();
+  private static byte[] getPixelsRgb(BufferedImage image) {
+    return ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
   }
 
   private static int colorChannelDifference(int value1, int value2) {
     return Math.abs((value1 & 0xff) - (value2 & 0xff));
   }
 
-  static void createDeltaImage(BufferedImage image1, BufferedImage image2, String pathToNewFile)
+
+  static void saveDeltaImage(BufferedImage image1, BufferedImage image2, String pathToNewFile)
       throws IOException {
-    BufferedImage newImage = new BufferedImage(image1.getWidth(), image1.getHeight(),
-        image1.getType());
-    //inspiration från
-    // https://stackoverflow.com/questions/37598977/how-to-compare-two-images-using-selenium
-    //TODO: skriva om så att den använder en effektivare java-kod
-    //TODO: hantera om bilderna är olika stora
     //TODO: pathToNewFile borde kanske vara en Path eller File
-    //se denna https://stackoverflow.com/questions/6524196/java-get-pixel-array-from-image
+    checkImageSizesMatch(image1, image2);
+    BufferedImage delta = createDeltaImage(image1, image2);
+    ImageIO.write(delta, "png", new File(pathToNewFile));
+  }
+
+  private static void checkImageSizesMatch(BufferedImage image1, BufferedImage image2) {
+    if ((image1.getWidth() != image2.getWidth()) || image1.getHeight() != image2.getHeight()) {
+      throw new IllegalArgumentException("Images have different size.");
+    }
+  }
+
+  private static BufferedImage createDeltaImage(BufferedImage image1, BufferedImage image2) {
+    checkImageSizesMatch(image1, image2);
+    BufferedImage newImage = getCleanImage(image1);
     for (int column = 0; column < image1.getWidth(); column++) {
       for (int row = 0; row < image1.getHeight(); row++) {
-        int colorValue1 = image1.getRGB(column, row);
-        int colorValue2 = image2.getRGB(column, row);
-        int imageDiff = getColorDifference(colorValue1, colorValue2);
+        int color1 = image1.getRGB(column, row);
+        int color2 = image2.getRGB(column, row);
+        int imageDiff = getColorDifference(color1, color2);
         newImage.setRGB(column, row, imageDiff);
       }
     }
-    ImageIO.write(newImage, "png", new File(pathToNewFile));
+    return newImage;
   }
 
 
+  private static BufferedImage getCleanImage(BufferedImage image1) {
+    return new BufferedImage(image1.getWidth(), image1.getHeight(), image1.getType());
+  }
+
   static void createDeltaImage2(BufferedImage image1, BufferedImage image2, String pathToNewFile)
       throws IOException {
-    int width = image1.getWidth();
-    int height = image1.getHeight();
-    BufferedImage newImage = new BufferedImage(width, height, image1.getType());
+    checkImageSizesMatch(image1, image2);
+    BufferedImage newImage = getCleanImage(image1);
     int maxDiff = 1;
-    for (int column = 0; column < width; column++) {
-      for (int row = 0; row < height; row++) {
+    for (int column = 0; column < image1.getWidth(); column++) {
+      for (int row = 0; row < image1.getHeight(); row++) {
         int color1 = image1.getRGB(column, row);
         int color2 = image2.getRGB(column, row);
         int absoluteDiff = getAbsoluteColorDifference(color1, color2);
@@ -95,8 +103,8 @@ class Differ {
       }
     }
     //TODO: inte beräkna absoluteDiff två gånger
-    for (int column = 0; column < width; column++) {
-      for (int row = 0; row < height; row++) {
+    for (int column = 0; column < image1.getWidth(); column++) {
+      for (int row = 0; row < image1.getHeight(); row++) {
         int color1 = image1.getRGB(column, row);
         int color2 = image2.getRGB(column, row);
         int absoluteDiff = getAbsoluteColorDifference(color1, color2);
@@ -130,7 +138,6 @@ class Differ {
   }
 
   private static int rgbBytesToInvertedColorInt(int red, int green, int blue, int alpha) {
-    //TODO: ska det verkligen inverteras??
     return (alpha << 24) | ~((red << 16) | (green << 8) | blue);
   }
 
