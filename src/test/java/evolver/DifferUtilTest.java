@@ -4,11 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
-import javax.imageio.ImageIO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -56,13 +53,9 @@ class DifferUtilTest {
   @MethodSource("coloredImages")
   @DisplayName("Verify delta image creation using different colored images")
   void createDeltaImageTest(BufferedImage bufferedImage1, BufferedImage bufferedImage2,
-      BufferedImage expectedImage, int a, String message) throws IOException {
+      BufferedImage expectedImage, int a, String message) {
 
-    Path outputPng = Files.createFile(tempDir.resolve("image.png"));
-    DifferUtil.saveDeltaImage(bufferedImage1, bufferedImage2, outputPng.toString());
-
-    BufferedImage outputBufferedImage = ImageIO.read(outputPng.toFile());
-
+    BufferedImage outputBufferedImage= DifferUtil.createDeltaImage(bufferedImage1, bufferedImage2);
     assertEquals(expectedImage.getRGB(1, 1), outputBufferedImage.getRGB(1, 1));
 
   }

@@ -98,18 +98,22 @@ public class TargetImage {
 
 
   static void setTargetImage(File file) throws IOException {
-    BufferedImage originalFormat = ImageIO.read(file);
-    width = originalFormat.getWidth();
-    height = originalFormat.getHeight();
-    maximumDifference = width * height * 3 * 255;
-
-    originalBufferedImage = DifferUtil
-        .cloneToSpecificImageType(originalFormat, BufferedImage.TYPE_4BYTE_ABGR);
-
-    candidateBufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
-
-    candidateGraphics2d = candidateBufferedImage.createGraphics();
-    candidateGraphics2d.setClip(0, 0, width, height);
-
+    originalBufferedImage = ImageFileUtil.createFourChannelImageClone(file);
+    candidateBufferedImage = ImageFileUtil.createFourChannelBlankImage(originalBufferedImage);
+    maximumDifference = ImageFileUtil.calculateMaxDifference(candidateBufferedImage);
+    saveDimensions(candidateBufferedImage);
+    candidateGraphics2d = createGraphics(candidateBufferedImage);
   }
+
+  private static void saveDimensions(BufferedImage image) {
+    width = image.getWidth();
+    height = image.getHeight();
+  }
+
+  private static Graphics2D createGraphics(BufferedImage image) {
+    Graphics2D graphics2D =image.createGraphics();
+    graphics2D.setClip(0, 0, width, height);
+    return graphics2D;
+  }
+
 }
