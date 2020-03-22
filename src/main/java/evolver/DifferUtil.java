@@ -2,33 +2,8 @@ package evolver;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 
 class DifferUtil {
-
-  public static void main(String[] args) throws IOException {
-    BufferedImage in1 = ImageIO.read(new File("160px-Mona_Lisa.png"));
-    BufferedImage in2 = ImageIO.read(new File("result_96.37_1a.png"));
-    saveDeltaImage2(in1, in2, "diff5.png");
-  }
-
-  static BufferedImage cloneToSpecificImageType(BufferedImage image, int imageType) {
-    int width = image.getWidth();
-    int height = image.getHeight();
-    BufferedImage newImage = new BufferedImage(width, height, imageType);
-
-    for (int column = 0; column < width; column++) {
-      for (int row = 0; row < height; row++) {
-        int color = image.getRGB(column, row);
-        newImage.setRGB(column, row, color | (0xff << 24));
-
-
-      }
-    }
-    return newImage;
-  }
 
   static long totalImageColorDifference(BufferedImage image1, BufferedImage image2) {
     checkImageSizesMatch(image1, image2);
@@ -57,16 +32,9 @@ class DifferUtil {
     return Math.abs((value1 & 0xff) - (value2 & 0xff));
   }
 
-  static void saveDeltaImage(BufferedImage image1, BufferedImage image2, String pathToNewFile)
-      throws IOException {
+  static BufferedImage createDeltaImage(BufferedImage image1, BufferedImage image2) {
     checkImageSizesMatch(image1, image2);
-    BufferedImage delta = createDeltaImage(image1, image2);
-    ImageIO.write(delta, "png", new File(pathToNewFile));
-  }
-
-  private static BufferedImage createDeltaImage(BufferedImage image1, BufferedImage image2) {
-    checkImageSizesMatch(image1, image2);
-    BufferedImage newImage = getCleanImage(image1);
+    BufferedImage newImage = ImageFileUtil.createFourChannelBlankImage(image1);
     for (int column = 0; column < image1.getWidth(); column++) {
       for (int row = 0; row < image1.getHeight(); row++) {
         int color1 = image1.getRGB(column, row);
@@ -78,20 +46,31 @@ class DifferUtil {
     return newImage;
   }
 
-  private static BufferedImage getCleanImage(BufferedImage image1) {
-    return new BufferedImage(image1.getWidth(), image1.getHeight(), image1.getType());
-    //return new BufferedImage(image1.getWidth(), image1.getHeight(), 5);
+  private static int getColorDifference(int colorInt1, int colorInt2) {
+    int redDiff = colorChannelDifference(getRed(colorInt1), getRed(colorInt2));
+    int greenDiff = colorChannelDifference(getGreen(colorInt1), getGreen(colorInt2));
+    int blueDiff = colorChannelDifference(getBlue(colorInt1), getBlue(colorInt2));
+    return rgbBytesToInvertedColorInt(redDiff, greenDiff, blueDiff, 255);
   }
 
-  static void saveDeltaImage2(BufferedImage image1, BufferedImage image2, String pathToNewFile)
-      throws IOException {
-    checkImageSizesMatch(image1, image2);
-    BufferedImage newImage = createDeltaImage2(image1, image2);
-    ImageIO.write(newImage, "png", new File(pathToNewFile));
+  private static int getRed(int colorInt) {
+    return ((colorInt >> 16) & 0xFF);
   }
 
-  private static BufferedImage createDeltaImage2(BufferedImage image1, BufferedImage image2) {
-    BufferedImage newImage = getCleanImage(image1);
+  private static int getGreen(int colorInt) {
+    return ((colorInt >> 8) & 0xFF);
+  }
+
+  private static int getBlue(int colorInt) {
+    return (colorInt & 0xFF);
+  }
+
+  private static int rgbBytesToInvertedColorInt(int red, int green, int blue, int alpha) {
+    return (alpha << 24) | ~((red << 16) | (green << 8) | blue);
+  }
+
+  static BufferedImage createDeltaImage2(BufferedImage image1, BufferedImage image2) {
+    BufferedImage newImage = ImageFileUtil.createFourChannelBlankImage(image1);
     int maxDiff = 1;
     for (int column = 0; column < image1.getWidth(); column++) {
       for (int row = 0; row < image1.getHeight(); row++) {
@@ -130,29 +109,5 @@ class DifferUtil {
         .floor(Math.sqrt(
             (Math.pow(redDiff, 2) + Math.pow(greenDiff, 2) + Math.pow(blueDiff, 2)) / 3));
   }
-
-  private static int getColorDifference(int colorInt1, int colorInt2) {
-    int redDiff = colorChannelDifference(getRed(colorInt1), getRed(colorInt2));
-    int greenDiff = colorChannelDifference(getGreen(colorInt1), getGreen(colorInt2));
-    int blueDiff = colorChannelDifference(getBlue(colorInt1), getBlue(colorInt2));
-    return rgbBytesToInvertedColorInt(redDiff, greenDiff, blueDiff, 255);
-  }
-
-  private static int rgbBytesToInvertedColorInt(int red, int green, int blue, int alpha) {
-    return (alpha << 24) | ~((red << 16) | (green << 8) | blue);
-  }
-
-  private static int getRed(int colorInt) {
-    return ((colorInt >> 16) & 0xFF);
-  }
-
-  private static int getGreen(int colorInt) {
-    return ((colorInt >> 8) & 0xFF);
-  }
-
-  private static int getBlue(int colorInt) {
-    return (colorInt & 0xFF);
-  }
-
 
 }
