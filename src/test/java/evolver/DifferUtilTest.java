@@ -14,15 +14,16 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 class DifferUtilTest {
 
+  static BufferedImage gray = TestUtils.createBufferedImage(128,128,128);
+  static BufferedImage red = TestUtils.createBufferedImage(Color.red);
+  static BufferedImage black = TestUtils.createBufferedImage(Color.black);
+  static BufferedImage white = TestUtils.createBufferedImage(Color.white);
+  static BufferedImage green = TestUtils.createBufferedImage(Color.green);
+  static BufferedImage yellow = TestUtils.createBufferedImage(Color.yellow);
+  static BufferedImage blue = TestUtils.createBufferedImage(Color.blue);
+  static BufferedImage cyan = TestUtils.createBufferedImage(Color.cyan);
+
   private static Stream<Arguments> coloredImages() {
-    //BufferedImage red = TestUtils.createBufferedImage(255,0,0);
-    BufferedImage red = TestUtils.createBufferedImage(Color.red);
-    BufferedImage black = TestUtils.createBufferedImage(Color.black);
-    BufferedImage white = TestUtils.createBufferedImage(Color.white);
-    BufferedImage green = TestUtils.createBufferedImage(Color.green);
-    BufferedImage yellow = TestUtils.createBufferedImage(Color.yellow);
-    BufferedImage blue = TestUtils.createBufferedImage(Color.blue);
-    BufferedImage cyan = TestUtils.createBufferedImage(Color.cyan);
     return Stream.of(
         Arguments.of(black, red, cyan, 255 * 100, "Black vs Red"),
         Arguments.of(red, black, cyan, 255 * 100, "Red vs black"),
@@ -55,7 +56,7 @@ class DifferUtilTest {
   void createDeltaImageTest(BufferedImage bufferedImage1, BufferedImage bufferedImage2,
       BufferedImage expectedImage, int a, String message) {
 
-    BufferedImage outputBufferedImage= DifferUtil.createDeltaImage(bufferedImage1, bufferedImage2);
+    BufferedImage outputBufferedImage = DifferUtil.createDeltaImage(bufferedImage1, bufferedImage2);
     assertEquals(expectedImage.getRGB(1, 1), outputBufferedImage.getRGB(1, 1));
 
   }

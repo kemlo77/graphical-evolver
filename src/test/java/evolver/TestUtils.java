@@ -20,7 +20,7 @@ class TestUtils {
    * @param pathToNewFile the path to the new file including file name.
    */
   static void createPngFile(int width, int height, int r, int g, int b, String pathToNewFile) {
-    BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
 
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
